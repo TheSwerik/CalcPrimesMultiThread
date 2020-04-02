@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalcPrimesMultiThread", "CalcPrimesMultiThread.csproj", "{227C504D-A8C5-4FEF-BE82-FE91C4353091}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalcPrimesMultiThread", "CalcPrimesMultiThread\CalcPrimesMultiThread.csproj", "{9CD8FFC7-1833-474B-B587-D5396E941D23}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -8,9 +8,9 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{227C504D-A8C5-4FEF-BE82-FE91C4353091}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{227C504D-A8C5-4FEF-BE82-FE91C4353091}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{227C504D-A8C5-4FEF-BE82-FE91C4353091}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{227C504D-A8C5-4FEF-BE82-FE91C4353091}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CD8FFC7-1833-474B-B587-D5396E941D23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CD8FFC7-1833-474B-B587-D5396E941D23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CD8FFC7-1833-474B-B587-D5396E941D23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CD8FFC7-1833-474B-B587-D5396E941D23}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
