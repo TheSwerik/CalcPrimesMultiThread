@@ -10,8 +10,9 @@ namespace CalcPrimesMultiThread
         private static void Main(string[] args)
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US");
-            ThreadMaster threadMaster = new ThreadMaster();
+            var threadMaster = new ThreadMaster();
             threadMaster.Start();
+            // TODO create TaskMaster
         }
     }
 }
