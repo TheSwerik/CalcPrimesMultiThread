@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Threading;
 
-namespace CalcPrimesMultiThread.Fibo
+namespace CalcPrimesMultiThread.Prime
 {
     public class ThreadMaster
     {
-        private const int N = 16;
+        private const int N = 1;
         public void Start()
         {
             // one Event will be used for every Fibonacci Object
             ManualResetEvent[] doneEvents = new ManualResetEvent[N];
-            Fibonacci[] fibArray = new Fibonacci[N];
+            Prime[] fibArray = new Prime[N];
             Random r = new Random();
  
             // config and start ThreadPool
@@ -18,7 +18,7 @@ namespace CalcPrimesMultiThread.Fibo
  
             for (int i = 0; i < N; i++) {
                 doneEvents[i] = new ManualResetEvent(false);
-                Fibonacci f = new Fibonacci(r.Next(5, 46), doneEvents[i]);
+                Prime f = new Prime(r.Next(10000000, 1000000000), doneEvents[i]);
                 fibArray[i] = f;
  
                 // give Tasks to Pool
@@ -29,11 +29,12 @@ namespace CalcPrimesMultiThread.Fibo
             WaitHandle.WaitAll(doneEvents);
             Console.WriteLine("All calculations finished.");
  
-            // Zeige die Ergebnisse an
+            // Show results
             for (int i = 0; i < N; i++) {
-                Fibonacci f = fibArray[i];
-                Console.WriteLine("Fibonacci({0}) = {1}", f.N, f.FibOfN);
+                var f = fibArray[i];
+                Console.WriteLine("PrimeSieve({0}) = {1}", f.N, f.FibOfN);
             }
+            Thread.Sleep(500);
         }
     }
 }
