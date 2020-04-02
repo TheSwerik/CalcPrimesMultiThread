@@ -1,2 +1,2 @@
 # CalcPrimesMultiThread
-I try to calculate Primes Multithreaded.
+I want to learn Multithreading by calculating Primes.
