@@ -15,6 +15,8 @@ namespace CalcPrimesMultiThread.Prime
         public static void Start(int threadCount = -1)
         {
             _n = threadCount < 0 ? Environment.ProcessorCount : threadCount;
+            
+            var watch = new Stopwatch();
                 
             // one Event will be used for every Prime Object
             var events = new WaitHandle[_n];
@@ -29,6 +31,7 @@ namespace CalcPrimesMultiThread.Prime
                 primes[i] = new Prime(int.MaxValue - 57, (ManualResetEvent) events[i]);
             }
 
+            watch.Start();
             BigInteger x = 0;
             x = BigInteger.Parse(File.ReadAllLines(Filename).Last(s => !s.Equals("")));
             while (x <= Max)
@@ -50,6 +53,8 @@ namespace CalcPrimesMultiThread.Prime
                     if (prime.IsPrime) sw.WriteLine(prime.N);
                 }
             }
+            watch.Stop();
+            Console.WriteLine("Calculation finished in {0}.", watch.Elapsed.ToString());
         }
         public static BigInteger Max { get; set; }
 
