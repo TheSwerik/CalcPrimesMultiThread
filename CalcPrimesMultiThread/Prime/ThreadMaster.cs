@@ -33,12 +33,13 @@ namespace CalcPrimesMultiThread.Prime
                 primes[i] = new Prime(int.MaxValue - 57, (ManualResetEvent) events[i]);
             }
 
-            Console.WriteLine("\r{0} Threads Started.", _n);
+            Console.Write("\r" + new string(' ', 50) + "\r");
+            Console.WriteLine("{0} Threads Started.", _n);
             
             Console.Write("Picking up, where we left off...");
             watch.Start();
-            var x = BigInteger.Parse(File.ReadAllLines(Filename).Last(s => !s.Equals("")));
-            Console.Write("\r" + new string(' ', Console.WindowWidth) + "\r");
+            var x = BigInteger.Parse(File.ReadLines(Filename).Last());
+            Console.Write("\r" + new string(' ', 50) + "\r");
             Console.WriteLine("Starting at {0}.", x);
 
             while (x <= Max)

@@ -16,7 +16,7 @@ namespace CalcPrimesMultiThread
             Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US");
             try
             {
-                Console.WriteLine("Until what number do you want to calculate?");
+                Console.WriteLine("Until what number do you want to calculate?\n");
                 var max = BigInteger.Parse(Console.ReadLine() ?? throw new NullReferenceException());
                 
                 Console.WriteLine("How Many Threads do you want to use?");
