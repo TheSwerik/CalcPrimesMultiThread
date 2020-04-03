@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Threading;
 
 namespace CalcPrimesMultiThread.Prime
@@ -14,37 +15,46 @@ namespace CalcPrimesMultiThread.Prime
             _doneEvent = doneEvent;
         }
 
+        public Prime(BigInteger n)
+        {
+            N = n;
+            _doneEvent = null;
+        }
+
+        public BigInteger N { get; }
+        public long PrimesTillN { get; private set; }
+
         // wrapper-method for threadpool:
         public void ThreadPoolCallback(object threadContext)
         {
             var threadIndex = (int) threadContext;
-            Console.WriteLine("Thread {0} starts calculating all primes till " + N + " ...", threadIndex);
-            FibOfN = PrimeSieve(N).LongLength;
-            Console.WriteLine("Thread {0} finished...", threadIndex);
+            Console.WriteLine("Thread {0} starts calculating all primes till " + (N + 1) + " ...", threadIndex);
+            PrimesTillN = PrimeSieve((int) N).Length;
+            Console.WriteLine("Thread {0} finished...", threadIndex + 1);
 
             // notify that calculation finished:
             _doneEvent.Set();
         }
 
-        private static int[] PrimeSieve(int n) {
+        public int[] PrimeSieve(int n)
+        {
             var sieve = new bool[n + 1];
             var primes = new List<int> {2};
-            int root = (int) Math.Sqrt(n);
-            for (int i = 3; i <= root; i += 2) {
-                if (!sieve[i]) {
-                    primes.Add(i);
-                    for (int j = i * i; j < sieve.Length; j += i << 1) {
-                        sieve[j] = true;
-                    }
+            var root = (int) Math.Sqrt(n);
+            for (long i = 3; i <= root; i += 2)
+                // System.Console.WriteLine(1);
+                if (!sieve[i])
+                {
+                    // System.Console.WriteLine(2);
+                    primes.Add((int) i);
+                    for (var j = i * i; j < sieve.Length; j += i << 1) sieve[j] = true;
+                    // System.Console.WriteLine(3);
                 }
-            }
-            for (int i = (root & 1) == 0 ? root + 1 : root + 2; i < n; i += 2) {
-                if (!sieve[i]) primes.Add(i);
-            }
+
+            for (var i = (root & 1) == 0 ? root + 1 : root + 2; i < n; i += 2)
+                if (!sieve[i])
+                    primes.Add(i);
             return primes.ToArray();
         }
-
-        public int N { get; }
-        public long FibOfN { get; private set; }
     }
 }

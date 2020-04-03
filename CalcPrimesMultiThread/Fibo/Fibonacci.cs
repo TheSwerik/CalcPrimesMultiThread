@@ -5,22 +5,24 @@ namespace CalcPrimesMultiThread
 {
     public class Fibonacci
     {
-        private readonly int _n;
-        private long _fibOfN;
         private readonly ManualResetEvent _doneEvent;
 
         public Fibonacci(int n, ManualResetEvent doneEvent)
         {
-            _n = n;
+            N = n;
             _doneEvent = doneEvent;
         }
+
+        public int N { get; }
+
+        public long FibOfN { get; private set; }
 
         // wrapper-method for threadpool:
         public void ThreadPoolCallback(object threadContext)
         {
-            int threadIndex = (int) threadContext;
-            Console.WriteLine("Thread {0} starts calculating all fibos till " + _n + " ...", threadIndex);
-            _fibOfN = Calculate(_n);
+            var threadIndex = (int) threadContext;
+            Console.WriteLine("Thread {0} starts calculating all fibos till " + N + " ...", threadIndex);
+            FibOfN = Calculate(N);
             Console.WriteLine("Thread {0} finished...", threadIndex);
 
             // notify that calculation finished:
@@ -32,8 +34,5 @@ namespace CalcPrimesMultiThread
             if (n <= 1) return n;
             return Calculate(n - 1) + Calculate(n - 2);
         }
-
-        public int N => _n;
-        public long FibOfN => _fibOfN;
     }
 }
