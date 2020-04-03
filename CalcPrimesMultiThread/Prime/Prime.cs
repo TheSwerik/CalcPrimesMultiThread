@@ -27,13 +27,20 @@ namespace CalcPrimesMultiThread.Prime
         // wrapper-method for threadpool:
         public void SeeIfNIsPrime(object threadContext)
         {
-            var root = Math.Sqrt((double) N);
-            var primes = PrimeSieve((int) N);
-            foreach (var prime in primes)
+            if (N % 2 == 0)
             {
-                if (N % prime != 0) continue;
                 IsPrime = false;
-                break;
+                _doneEvent.Set();
+                return;
+            }
+
+            var root = Math.Sqrt((long) N);
+            for (var i = 3; i < root; i += 2)
+            {
+                if (N % i != 0) continue;
+                IsPrime = false;
+                _doneEvent.Set();
+                return;
             }
 
             IsPrime = true;

@@ -29,6 +29,8 @@ namespace CalcPrimesMultiThread
                 if (input.ToLowerInvariant().Contains("y")) shouldOverride = true;
                 else if (input.ToLowerInvariant().Equals("true")) shouldOverride = true;
                 
+                Console.WriteLine("\nStarting...");
+                
                 if (shouldOverride)
                 {
                     ThreadMaster.Max = MaxSieveValue;

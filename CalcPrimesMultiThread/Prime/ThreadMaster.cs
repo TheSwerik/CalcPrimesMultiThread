@@ -15,7 +15,8 @@ namespace CalcPrimesMultiThread.Prime
 
         public static void Start(int threadCount = -1)
         {
-            _n = threadCount < 0 ? Environment.ProcessorCount : threadCount;
+            _n = threadCount < 1 ? Environment.ProcessorCount : threadCount;
+            _n = threadCount > 64 ? 64 : threadCount;
 
             var watch = new Stopwatch();
 
@@ -33,12 +34,17 @@ namespace CalcPrimesMultiThread.Prime
             }
 
             Console.WriteLine("\r{0} Threads Started.", _n);
+            
+            Console.Write("Picking up, where we left off...");
             watch.Start();
-            BigInteger x = 0;
-            x = BigInteger.Parse(File.ReadAllLines(Filename).Last(s => !s.Equals("")));
+            var x = BigInteger.Parse(File.ReadAllLines(Filename).Last(s => !s.Equals("")));
+            Console.Write("\r" + new string(' ', Console.WindowWidth) + "\r");
+            Console.WriteLine("Starting at {0}.", x);
+
             while (x <= Max)
             {
-                Console.Write("\rStarting check from {0} to {1}...", x, x + threadCount * 2);
+                if(watch.Elapsed.Milliseconds % 100_000 == 0) Console.Write("\rChecking from {0} to {1}...", x, x + threadCount * 2);
+                // Console.Write("\rChecking from {0} to {1}...", x, x + threadCount * 2);
                 for (var i = 0; i < _n; i++)
                 {
                     primes[i].N = x += 2;
@@ -48,7 +54,6 @@ namespace CalcPrimesMultiThread.Prime
 
                 // Wait for all Threads
                 WaitHandle.WaitAll(events);
-                Console.Write("\rAll Threads finished. Writing to File...");
 
                 using var sw = File.AppendText("Test.txt");
                 foreach (var prime in primes)
@@ -57,7 +62,7 @@ namespace CalcPrimesMultiThread.Prime
             }
 
             watch.Stop();
-            Console.WriteLine("Calculation finished in {0}.", watch.Elapsed.ToString());
+            Console.WriteLine("\rCalculation finished in {0}.", watch.Elapsed.ToString());
         }
 
         public static void StartSieve()
@@ -80,7 +85,7 @@ namespace CalcPrimesMultiThread.Prime
             foreach (var prime in primes) sw.WriteLine(prime);
             watch.Stop();
             elapsed = watch.Elapsed.ToString();
-            Console.WriteLine("Finished in {0} Seconds.",
+            Console.WriteLine("Finished in {0} Seconds. \n",
                 double.Parse(elapsed.Substring(elapsed.LastIndexOf(":", StringComparison.Ordinal) + 1)));
         }
     }
