@@ -44,7 +44,6 @@ namespace CalcPrimesMultiThread.Prime
             while (x <= Max)
             {
                 if(watch.Elapsed.Milliseconds % 100_000 == 0) Console.Write("\rChecking from {0} to {1}...", x, x + threadCount * 2);
-                // Console.Write("\rChecking from {0} to {1}...", x, x + threadCount * 2);
                 for (var i = 0; i < _n; i++)
                 {
                     primes[i].N = x += 2;
