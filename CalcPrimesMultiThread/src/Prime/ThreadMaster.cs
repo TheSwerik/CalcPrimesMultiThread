@@ -9,7 +9,7 @@ namespace CalcPrimesMultiThread.Prime
 {
     public static class ThreadMaster
     {
-        private const string Filename = "Test.txt";
+        private const string Filename = "Primes.txt";
         private static int _n = 1;
         public static BigInteger Max { get; set; }
 
