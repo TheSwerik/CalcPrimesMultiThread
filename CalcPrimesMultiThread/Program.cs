@@ -18,23 +18,30 @@ namespace CalcPrimesMultiThread
             {
                 Console.WriteLine("Until what number do you want to calculate?");
                 var max = BigInteger.Parse(Console.ReadLine() ?? throw new NullReferenceException());
+                
+                Console.WriteLine("How Many Threads do you want to use?");
+                var input = Console.ReadLine();
+                var threadCount = string.IsNullOrEmpty(input) ? -1 : int.Parse(input);
+                
                 Console.WriteLine("Do you want to override any existing file?");
                 var shouldOverride = false;
-                var boolString = Console.ReadLine() ?? throw new NullReferenceException();
-                if (boolString.ToLowerInvariant().Contains("y")) shouldOverride = true;
-                else if (boolString.ToLowerInvariant().Equals("true")) shouldOverride = true;
+                input = Console.ReadLine() ?? throw new NullReferenceException();
+                if (input.ToLowerInvariant().Contains("y")) shouldOverride = true;
+                else if (input.ToLowerInvariant().Equals("true")) shouldOverride = true;
+                
                 if (shouldOverride)
                 {
                     ThreadMaster.Max = MaxSieveValue;
                     ThreadMaster.StartSieve();
+                    if (max <= MaxSieveValue) return;
                     ThreadMaster.Max = max;
-                    ThreadMaster.Start();
+                    ThreadMaster.Start(threadCount);
                 }
                 else
                 {
                     ThreadMaster.Max = max;
                     if (max <= MaxSieveValue) ThreadMaster.StartSieve();
-                    else ThreadMaster.Start();
+                    else ThreadMaster.Start(threadCount);
                 }
             }
             catch (NullReferenceException)
