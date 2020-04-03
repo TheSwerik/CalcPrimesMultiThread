@@ -55,13 +55,10 @@ namespace CalcPrimesMultiThread.Prime
             var primes = new List<int> {2};
             var root = (int) Math.Sqrt(n);
             for (long i = 3; i <= root; i += 2)
-                // System.Console.WriteLine(1);
                 if (!sieve[i])
                 {
-                    // System.Console.WriteLine(2);
                     primes.Add((int) i);
                     for (var j = i * i; j < sieve.Length; j += i << 1) sieve[j] = true;
-                    // System.Console.WriteLine(3);
                 }
 
             for (var i = (root & 1) == 0 ? root + 1 : root + 2; i < n; i += 2)
