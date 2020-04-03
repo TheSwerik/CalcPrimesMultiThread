@@ -11,19 +11,20 @@ namespace CalcPrimesMultiThread.Prime
     {
         private const string Filename = "Test.txt";
         private static int _n = 1;
+        public static BigInteger Max { get; set; }
 
         public static void Start(int threadCount = -1)
         {
             _n = threadCount < 0 ? Environment.ProcessorCount : threadCount;
-            
+
             var watch = new Stopwatch();
-                
+
             // one Event will be used for every Prime Object
             var events = new WaitHandle[_n];
             var primes = new Prime[_n];
 
             // config and start ThreadPool
-            Console.WriteLine("Starting {0} Threads...", _n);
+            Console.Write("Starting {0} Threads...", _n);
 
             for (var i = 0; i < _n; i++)
             {
@@ -31,32 +32,33 @@ namespace CalcPrimesMultiThread.Prime
                 primes[i] = new Prime(int.MaxValue - 57, (ManualResetEvent) events[i]);
             }
 
+            Console.WriteLine("\r{0} Threads Started.", _n);
             watch.Start();
             BigInteger x = 0;
             x = BigInteger.Parse(File.ReadAllLines(Filename).Last(s => !s.Equals("")));
             while (x <= Max)
             {
+                Console.Write("\rStarting check from {0} to {1}...", x, x + threadCount * 2);
                 for (var i = 0; i < _n; i++)
                 {
-                    primes[i].N = (x += 2);
+                    primes[i].N = x += 2;
                     // give Threads to Pool
                     ThreadPool.QueueUserWorkItem(primes[i].SeeIfNIsPrime, i);
                 }
 
                 // Wait for all Threads
                 WaitHandle.WaitAll(events);
-                Console.Write("\rAll Threads finished.");
+                Console.Write("\rAll Threads finished. Writing to File...");
 
                 using var sw = File.AppendText("Test.txt");
                 foreach (var prime in primes)
-                {
-                    if (prime.IsPrime) sw.WriteLine(prime.N);
-                }
+                    if (prime.IsPrime)
+                        sw.WriteLine(prime.N);
             }
+
             watch.Stop();
             Console.WriteLine("Calculation finished in {0}.", watch.Elapsed.ToString());
         }
-        public static BigInteger Max { get; set; }
 
         public static void StartSieve()
         {
@@ -75,10 +77,7 @@ namespace CalcPrimesMultiThread.Prime
             Console.WriteLine("Writing to file...");
             watch.Start();
             using var sw = File.CreateText("Test.txt");
-            foreach (var prime in primes)
-            {
-                sw.WriteLine(prime);
-            }
+            foreach (var prime in primes) sw.WriteLine(prime);
             watch.Stop();
             elapsed = watch.Elapsed.ToString();
             Console.WriteLine("Finished in {0} Seconds.",

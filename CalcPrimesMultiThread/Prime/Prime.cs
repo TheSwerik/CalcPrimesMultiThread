@@ -35,6 +35,7 @@ namespace CalcPrimesMultiThread.Prime
                 IsPrime = false;
                 break;
             }
+
             IsPrime = true;
 
             // notify that calculation finished:
