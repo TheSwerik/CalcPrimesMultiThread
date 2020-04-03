@@ -21,16 +21,21 @@ namespace CalcPrimesMultiThread.Prime
             _doneEvent = null;
         }
 
-        public BigInteger N { get; }
-        public long PrimesTillN { get; private set; }
+        public BigInteger N { get; set; }
+        public bool IsPrime { get; private set; }
 
         // wrapper-method for threadpool:
-        public void ThreadPoolCallback(object threadContext)
+        public void SeeIfNIsPrime(object threadContext)
         {
-            var threadIndex = (int) threadContext;
-            Console.WriteLine("Thread {0} starts calculating all primes till " + (N + 1) + " ...", threadIndex);
-            PrimesTillN = PrimeSieve((int) N).Length;
-            Console.WriteLine("Thread {0} finished...", threadIndex + 1);
+            var root = Math.Sqrt((double) N);
+            var primes = PrimeSieve((int) N);
+            foreach (var prime in primes)
+            {
+                if (N % prime != 0) continue;
+                IsPrime = false;
+                break;
+            }
+            IsPrime = true;
 
             // notify that calculation finished:
             _doneEvent.Set();

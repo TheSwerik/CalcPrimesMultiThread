@@ -17,10 +17,22 @@ namespace CalcPrimesMultiThread
             try
             {
                 var max = BigInteger.Parse(Console.ReadLine() ?? throw new NullReferenceException());
-                if (max <= MaxSieveValue)
-                    ThreadMaster.StartSieve(max);
-                else
+                var shouldOverride = bool.Parse(Console.ReadLine() ?? throw new NullReferenceException());
+                if (shouldOverride)
+                {
+                    ThreadMaster.Max = MaxSieveValue;
+                    ThreadMaster.StartSieve();
+                    ThreadMaster.Max = max;
                     ThreadMaster.Start();
+                }
+                else
+                {
+                    ThreadMaster.Max = max;
+                    if (max <= MaxSieveValue)
+                        ThreadMaster.StartSieve();
+                    else
+                        ThreadMaster.Start();
+                }
             }
             catch (NullReferenceException e)
             {
