@@ -58,7 +58,8 @@ namespace CalcPrimesMultiThread.Prime
                 if (!sieve[i])
                 {
                     primes.Add((int) i);
-                    for (var j = i * i; j < sieve.Length; j += i << 1) sieve[j] = true;
+                    var add = i << 1;
+                    for (var j = i * i; j < sieve.Length; j += add) sieve[j] = true;
                 }
 
             for (var i = (root & 1) == 0 ? root + 1 : root + 2; i < n; i += 2)
