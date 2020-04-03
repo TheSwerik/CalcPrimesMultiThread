@@ -21,12 +21,8 @@ namespace CalcPrimesMultiThread
                 Console.WriteLine("Do you want to override any existing file?");
                 var shouldOverride = false;
                 var boolString = Console.ReadLine() ?? throw new NullReferenceException();
-                if (boolString.ToLowerInvariant().Equals("y")) shouldOverride = true;
-                else if (boolString.ToLowerInvariant().Equals("yes")) shouldOverride = true;
+                if (boolString.ToLowerInvariant().Contains("y")) shouldOverride = true;
                 else if (boolString.ToLowerInvariant().Equals("true")) shouldOverride = true;
-                else if (boolString.ToLowerInvariant().Equals("n")) shouldOverride = false;
-                else if (boolString.ToLowerInvariant().Equals("no")) shouldOverride = false;
-                else if (boolString.ToLowerInvariant().Equals("false")) shouldOverride = false;
                 if (shouldOverride)
                 {
                     ThreadMaster.Max = MaxSieveValue;
@@ -37,10 +33,8 @@ namespace CalcPrimesMultiThread
                 else
                 {
                     ThreadMaster.Max = max;
-                    if (max <= MaxSieveValue)
-                        ThreadMaster.StartSieve();
-                    else
-                        ThreadMaster.Start();
+                    if (max <= MaxSieveValue) ThreadMaster.StartSieve();
+                    else ThreadMaster.Start();
                 }
             }
             catch (NullReferenceException)
