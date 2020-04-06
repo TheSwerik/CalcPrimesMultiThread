@@ -45,7 +45,7 @@ namespace CalcPrimesMultiThread.Prime
             }
 
             watch.Stop();
-            Console.WriteLine("Finished in {0} . \n", watch.Elapsed.ToString());
+            Console.WriteLine("\nFinished in {0} .", watch.Elapsed.ToString());
         }
 
         private static IEnumerable<BigInteger> Range(BigInteger fromInclusive, BigInteger toExclusive)
