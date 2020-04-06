@@ -28,7 +28,7 @@ namespace CalcPrimesMultiThread.Prime
             watch.Start();
 
             var current = lastPrime;
-            for (BigInteger i = 0; current < Max; i++)
+            for (BigInteger i = 1; current < Max; i++)
             {
                 current = lastPrime + i * 10_000_000;
                 var bag = new ConcurrentBag<BigInteger>();
@@ -42,7 +42,7 @@ namespace CalcPrimesMultiThread.Prime
                 list.Sort();
                 using var sw = File.AppendText(Filename);
                 foreach (var prime in list) sw.WriteLine(prime);
-                Console.WriteLine("\rWritten till {0}.", current + 10_000_000);
+                Console.Write("\rWritten till {0}.", current + 10_000_000);
             }
 
             watch.Stop();
