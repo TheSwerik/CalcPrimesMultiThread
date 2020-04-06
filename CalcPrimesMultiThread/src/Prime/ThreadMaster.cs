@@ -81,7 +81,7 @@ namespace CalcPrimesMultiThread.Prime
 
             Console.WriteLine("Writing to file...");
             watch.Start();
-            using var sw = File.CreateText("Test.txt");
+            using var sw = File.CreateText(Filename);
             foreach (var prime in primes) sw.WriteLine(prime);
             watch.Stop();
             elapsed = watch.Elapsed.ToString();
