@@ -19,38 +19,34 @@ namespace CalcPrimesMultiThread.Prime
         {
             var watch = new Stopwatch();
 
-            BigInteger lastPrime = 1000000007;
+            Console.Write("Picking up, where we left off...");
+            var lastPrime = BigInteger.Parse(File.ReadLines(Filename).Last());
+            Console.Write("\r" + new string(' ', 50) + "\r");
+            Console.WriteLine("Starting at {0}.", lastPrime);
 
-            for (BigInteger i = 0; i < 1_000_000_000 / lastPrime + 1; i++)
+            System.Console.WriteLine("\nStarting with calculaton...");
+            watch.Start();
+
+            var current = lastPrime;
+            for (BigInteger i = 0; current < Max; i++)
             {
+                current = lastPrime + i * 10_000_000;
                 var bag = new ConcurrentBag<BigInteger>();
 
-                ParallelFor(i * lastPrime, i * lastPrime + 1000000007, n =>
+                ParallelFor(current, current + 10_000_000, n =>
                 {
-                    if (StaticPrime.IsPrime(n))
-                    {
-                        bag.Add(n);
-                        //Console.WriteLine(i + " is Prime!");
-                    }
+                    if (StaticPrime.IsPrime(n)) bag.Add(n);
                 });
 
                 var list = bag.ToList();
                 list.Sort();
-
-                watch.Stop();
-                Console.WriteLine("\rCalculation finished in {0}.", watch.Elapsed.ToString());
-
-                watch.Reset();
-
-                Console.WriteLine("Writing to file...");
-                watch.Start();
-                using var sw = File.CreateText(Filename);
+                using var sw = File.AppendText(Filename);
                 foreach (var prime in list) sw.WriteLine(prime);
-                watch.Stop();
-                var elapsed = watch.Elapsed.ToString();
-                Console.WriteLine("Finished in {0} Seconds. \n",
-                    double.Parse(elapsed.Substring(elapsed.LastIndexOf(":", StringComparison.Ordinal) + 1)));
+                Console.WriteLine("\rWritten till {0}.", current + 10_000_000);
             }
+
+            watch.Stop();
+            Console.WriteLine("Finished in {0} . \n", watch.Elapsed.ToString());
         }
 
         private static IEnumerable<BigInteger> Range(BigInteger fromInclusive, BigInteger toExclusive)

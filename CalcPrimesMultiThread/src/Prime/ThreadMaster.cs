@@ -55,7 +55,7 @@ namespace CalcPrimesMultiThread.Prime
                 // Wait for all Threads
                 WaitHandle.WaitAll(events);
 
-                using var sw = File.AppendText("Test.txt");
+                using var sw = File.AppendText(Filename);
                 foreach (var prime in primes)
                     if (prime.IsPrime)
                         sw.WriteLine(prime.N);
