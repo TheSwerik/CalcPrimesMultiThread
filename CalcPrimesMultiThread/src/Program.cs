@@ -31,12 +31,9 @@ namespace CalcPrimesMultiThread
 
                 if (shouldOverride)
                 {
-                    ThreadMaster.Max = MaxSieveValue;
-                    TaskMaster.Max = MaxSieveValue;
-                    TaskMaster.StartSieve();
-                    if (max <= MaxSieveValue) return;
                     ThreadMaster.Max = max;
                     TaskMaster.Max = max;
+                    TaskMaster.StartSieve(max <= MaxSieveValue ? max : MaxSieveValue);
                     if (Task) TaskMaster.Start();
                     else
                     {
@@ -50,7 +47,7 @@ namespace CalcPrimesMultiThread
                 {
                     ThreadMaster.Max = max;
                     TaskMaster.Max = max;
-                    if (max <= MaxSieveValue) TaskMaster.StartSieve();
+                    if (max <= MaxSieveValue) TaskMaster.StartSieve(max);
                     else if (Task) TaskMaster.Start();
                     else
                     {
@@ -65,8 +62,6 @@ namespace CalcPrimesMultiThread
             {
                 Console.WriteLine("Please enter a real number.");
             }
-
-            // TODO create TaskMaster
         }
     }
 }

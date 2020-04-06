@@ -19,23 +19,38 @@ namespace CalcPrimesMultiThread.Prime
         {
             var watch = new Stopwatch();
 
-            var bag = new ConcurrentBag<BigInteger>() {2};
+            BigInteger lastPrime = 1000000007;
 
-            ParallelFor(3, Max, i =>
+            for (BigInteger i = 0; i < 1_000_000_000 / lastPrime + 1; i++)
             {
-                if (StaticPrime.IsPrime(i))
+                var bag = new ConcurrentBag<BigInteger>();
+
+                ParallelFor(i * lastPrime, i * lastPrime + 1000000007, n =>
                 {
-                    bag.Add(i);
-                    //Console.WriteLine(i + " is Prime!");
-                }
-            });
+                    if (StaticPrime.IsPrime(n))
+                    {
+                        bag.Add(n);
+                        //Console.WriteLine(i + " is Prime!");
+                    }
+                });
 
-            var list = bag.ToList();
-            list.Sort();
+                var list = bag.ToList();
+                list.Sort();
 
-            watch.Stop();
-            Console.WriteLine("\rCalculation finished in {0}.", watch.Elapsed.ToString());
-            //Console.WriteLine(string.Join(" ", list));
+                watch.Stop();
+                Console.WriteLine("\rCalculation finished in {0}.", watch.Elapsed.ToString());
+
+                watch.Reset();
+
+                Console.WriteLine("Writing to file...");
+                watch.Start();
+                using var sw = File.CreateText(Filename);
+                foreach (var prime in list) sw.WriteLine(prime);
+                watch.Stop();
+                var elapsed = watch.Elapsed.ToString();
+                Console.WriteLine("Finished in {0} Seconds. \n",
+                    double.Parse(elapsed.Substring(elapsed.LastIndexOf(":", StringComparison.Ordinal) + 1)));
+            }
         }
 
         private static IEnumerable<BigInteger> Range(BigInteger fromInclusive, BigInteger toExclusive)
@@ -48,8 +63,10 @@ namespace CalcPrimesMultiThread.Prime
             Parallel.ForEach(Range(fromInclusive, toExclusive), body);
         }
 
-        public static void StartSieve()
+        public static void StartSieve(BigInteger max)
         {
+            BigInteger help = Max;
+            Max = max;
             Console.WriteLine("Calculating Primes till {0} with 1 Thread and PrimeSieve...", Max);
             var watch = new Stopwatch();
 
@@ -70,6 +87,7 @@ namespace CalcPrimesMultiThread.Prime
             elapsed = watch.Elapsed.ToString();
             Console.WriteLine("Finished in {0} Seconds. \n",
                 double.Parse(elapsed.Substring(elapsed.LastIndexOf(":", StringComparison.Ordinal) + 1)));
+            Max = help;
         }
     }
 }
