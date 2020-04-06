@@ -28,9 +28,8 @@ namespace CalcPrimesMultiThread.Prime
             watch.Start();
 
             var current = lastPrime;
-            for (BigInteger i = 1; current < Max; i++)
+            for (BigInteger i = 0; current < Max; i++, current = lastPrime + i * 10_000_000)
             {
-                current = lastPrime + i * 10_000_000;
                 var bag = new ConcurrentBag<BigInteger>();
 
                 ParallelFor(current, current + 10_000_000, n =>
