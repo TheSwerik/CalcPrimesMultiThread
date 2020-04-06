@@ -41,7 +41,7 @@ namespace CalcPrimesMultiThread.Prime
                 list.Sort();
                 using var sw = File.AppendText(Filename);
                 foreach (var prime in list) sw.WriteLine(prime);
-                Console.Write("\rWritten till {0}.", current + 10_000_000);
+                Console.Write("\rCalculated till {0}.", current + 10_000_000);
             }
 
             watch.Stop();
