@@ -39,12 +39,18 @@ namespace Frontend
                 return;
             }
 
-            if (MessageBox.Show("Are you sure that you want to override / delete all existing Files?", "WARNING",
-                MessageBoxButton.YesNo) != MessageBoxResult.Yes) return;
-
-            if (MessageBox.Show("Are you really sure?", "WARNING", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            if (OverrideCheckBox.IsChecked ?? false)
             {
-                Console.WriteLine("START");
+                if (MessageBox.Show("Are you sure that you want to override / delete all existing Files?", "WARNING",
+                    MessageBoxButton.YesNo) != MessageBoxResult.Yes) return;
+                if (MessageBox.Show("Are you really sure?", "WARNING",
+                    MessageBoxButton.YesNo) != MessageBoxResult.Yes) return;
+
+                Console.WriteLine("START w/ Override");
+            }
+            else
+            {
+                Console.WriteLine("START w/out Override");
             }
         }
 
