@@ -15,13 +15,15 @@ namespace Frontend
 
         private void StartButton_OnClick(object sender, RoutedEventArgs e)
         {
+            int? threadCount = null;
+            BigInteger? maxNumber = null;
             if ((!MaxNumberCheckBox.IsChecked ?? false) && !IsLegitNumber(MaxNumberBox.Text))
             {
                 MessageBox.Show("Maximum Number not Valid!", "ERROR", MessageBoxButton.OK);
                 return;
             }
 
-            if ((!MaxNumberCheckBox.IsChecked ?? false) && BigInteger.Parse(MaxNumberBox.Text) < 2)
+            if ((!MaxNumberCheckBox.IsChecked ?? false) && ((maxNumber = BigInteger.Parse(MaxNumberBox.Text)) < BigInteger.One * 2))
             {
                 MessageBox.Show("Maximum Number should not be below 2!", "ERROR", MessageBoxButton.OK);
                 return;
@@ -33,7 +35,7 @@ namespace Frontend
                 return;
             }
 
-            if ((ThreadRadioThread.IsChecked ?? false) && int.Parse(MaxNumberBox.Text) < 1)
+            if ((ThreadRadioThread.IsChecked ?? false) && (threadCount = int.Parse(MaxNumberBox.Text)) < 1)
             {
                 MessageBox.Show("Threadcount should not be below 1!", "ERROR", MessageBoxButton.OK);
                 return;
@@ -46,11 +48,11 @@ namespace Frontend
                 if (MessageBox.Show("Are you really sure?", "WARNING",
                     MessageBoxButton.YesNo) != MessageBoxResult.Yes) return;
 
-                Console.WriteLine("START w/ Override");
+                Starter.Start((!ThreadRadioThread.IsChecked ?? false), true, threadCount, maxNumber);
             }
             else
             {
-                Console.WriteLine("START w/out Override");
+                Starter.Start((!ThreadRadioThread.IsChecked ?? false), false, threadCount, maxNumber);
             }
         }
 
