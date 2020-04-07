@@ -34,7 +34,7 @@ namespace CalcPrimesMultiThread
                     ThreadMaster.Max = max;
                     TaskMaster.Max = max;
                     TaskMaster.StartSieve(max <= MaxSieveValue ? max : MaxSieveValue);
-                    if (Task) TaskMaster.Start();
+                    if (Task && max > MaxSieveValue) TaskMaster.Start();
                     else
                     {
                         Console.WriteLine("How Many Threads do you want to use?");
@@ -59,6 +59,10 @@ namespace CalcPrimesMultiThread
                 }
             }
             catch (NullReferenceException)
+            {
+                Console.WriteLine("Please enter a real number.");
+            }
+            catch (FormatException)
             {
                 Console.WriteLine("Please enter a real number.");
             }

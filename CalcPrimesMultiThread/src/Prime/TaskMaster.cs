@@ -2,17 +2,14 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Numerics;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace CalcPrimesMultiThread.Prime
 {
-    public class TaskMaster
+    public static class TaskMaster
     {
-        private const string Filename = "Primes.txt";
         public static BigInteger Max { get; set; }
 
         public static void Start()
@@ -20,11 +17,11 @@ namespace CalcPrimesMultiThread.Prime
             var watch = new Stopwatch();
 
             Console.Write("Picking up, where we left off...");
-            var lastPrime = BigInteger.Parse(File.ReadLines(Filename).Last());
+            var lastPrime = FileHelper.FindLastPrime();
             Console.Write("\r" + new string(' ', 50) + "\r");
             Console.WriteLine("Starting at {0}.", lastPrime);
 
-            System.Console.WriteLine("\nStarting with calculaton...");
+            Console.WriteLine("\nStarting with calculaton...");
             watch.Start();
 
             var current = lastPrime;
@@ -39,8 +36,7 @@ namespace CalcPrimesMultiThread.Prime
 
                 var list = bag.ToList();
                 list.Sort();
-                using var sw = File.AppendText(Filename);
-                foreach (var prime in list) sw.WriteLine(prime);
+                FileHelper.WriteFile(list);
                 Console.Write("\rCalculated till {0}.", current + 10_000_000);
             }
 
@@ -60,7 +56,7 @@ namespace CalcPrimesMultiThread.Prime
 
         public static void StartSieve(BigInteger max)
         {
-            BigInteger help = Max;
+            var help = Max;
             Max = max;
             Console.WriteLine("Calculating Primes till {0} with 1 Thread and PrimeSieve...", Max);
             var watch = new Stopwatch();
@@ -76,12 +72,10 @@ namespace CalcPrimesMultiThread.Prime
 
             Console.WriteLine("Writing to file...");
             watch.Start();
-            using var sw = File.CreateText(Filename);
-            foreach (var prime in primes) sw.WriteLine(prime);
+            FileHelper.Restart();
+            FileHelper.WriteFile(primes);
             watch.Stop();
-            elapsed = watch.Elapsed.ToString();
-            Console.WriteLine("Finished in {0} Seconds. \n",
-                double.Parse(elapsed.Substring(elapsed.LastIndexOf(":", StringComparison.Ordinal) + 1)));
+            Console.WriteLine("Finished in {0}. \n", watch.Elapsed.ToString());
             Max = help;
         }
     }
