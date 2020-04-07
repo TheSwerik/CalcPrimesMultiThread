@@ -32,7 +32,7 @@ namespace Frontend
                 else
                 {
                     if (maxN.HasValue && FileHelper.FindLastPrime() <= max) return;
-                    if (max <= MaxSieveValue) TaskMaster.StartSieve(max);
+                    if (maxN.HasValue && max <= MaxSieveValue) TaskMaster.StartSieve(max);
                     else if (task) TaskMaster.Start();
                     else ThreadMaster.Start(threadCount ?? 0);
                 }
