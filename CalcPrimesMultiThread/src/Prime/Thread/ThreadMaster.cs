@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Threading;
@@ -9,84 +8,58 @@ namespace CalcPrimesMultiThread.Prime.Thread
 {
     public static class ThreadMaster
     {
-        private const string Filename = "Primes.txt";
-        private static int _n = 1;
+        private static int _threadCount = 1;
         public static BigInteger Max { get; set; }
 
         public static void Start(int threadCount = -1)
         {
-            _n = threadCount < 1 ? Environment.ProcessorCount : threadCount;
-            _n = threadCount > 64 ? 64 : threadCount;
+            _threadCount = threadCount < 1 ? Environment.ProcessorCount : threadCount;
+            _threadCount = threadCount > 64 ? 64 : threadCount;
 
             var watch = new Stopwatch();
 
             // one Event will be used for every Prime Object
-            var events = new WaitHandle[_n];
-            var primes = new Thread.Prime[_n];
+            var events = new WaitHandle[_threadCount];
+            var primes = new Prime[_threadCount];
 
             // config and start ThreadPool
-            Console.Write("Starting {0} Threads...", _n);
+            Console.Write("Starting {0} Threads...", _threadCount);
 
-            for (var i = 0; i < _n; i++)
+            for (var i = 0; i < _threadCount; i++)
             {
                 events[i] = new ManualResetEvent(false);
-                primes[i] = new Thread.Prime(int.MaxValue - 57, (ManualResetEvent) events[i]);
+                primes[i] = new Prime((ManualResetEvent) events[i]);
             }
 
             Console.Write("\r" + new string(' ', 50) + "\r");
-            Console.WriteLine("{0} Threads Started.", _n);
-            
+            Console.WriteLine("{0} Threads Started.", _threadCount);
+
             Console.Write("Picking up, where we left off...");
             watch.Start();
-            var x = BigInteger.Parse(File.ReadLines(Filename).Last());
+            var lastPrime = FileHelper.FindLastPrime();
             Console.Write("\r" + new string(' ', 50) + "\r");
-            Console.WriteLine("Starting at {0}.", x);
+            Console.WriteLine("Starting at {0}.", lastPrime);
 
-            while (x <= Max)
+            while (lastPrime <= Max)
             {
-                if(watch.Elapsed.Milliseconds % 100_000 == 0) Console.Write("\rChecking from {0} to {1}...", x, x + threadCount * 2);
-                for (var i = 0; i < _n; i++)
+                if (watch.Elapsed.Milliseconds % 100_000 < 100)
+                    Console.Write("\rChecking from {0} to {1}...", lastPrime, lastPrime + threadCount * 2);
+
+                for (var i = 0; i < _threadCount; i++)
                 {
-                    primes[i].N = x += 2;
+                    primes[i].N = lastPrime += 2;
                     // give Threads to Pool
-                    ThreadPool.QueueUserWorkItem(primes[i].SeeIfNIsPrime, i);
+                    ThreadPool.QueueUserWorkItem(primes[i].CheckNPrime, i);
                 }
 
                 // Wait for all Threads
                 WaitHandle.WaitAll(events);
 
-                using var sw = File.AppendText(Filename);
-                foreach (var prime in primes)
-                    if (prime.IsPrime)
-                        sw.WriteLine(prime.N);
+                FileHelper.WriteFile((from prime in primes where prime.IsPrime select prime.N).ToList());
             }
 
             watch.Stop();
             Console.WriteLine("\rCalculation finished in {0}.", watch.Elapsed.ToString());
-        }
-
-        public static void StartSieve()
-        {
-            Console.WriteLine("Calculating Primes till {0} with 1 Thread and PrimeSieve...", Max);
-            var watch = new Stopwatch();
-
-            watch.Start();
-            var primes = new Thread.Prime(Max).PrimeSieve((int) Max);
-            watch.Stop();
-            var elapsed = watch.Elapsed.ToString();
-            Console.WriteLine("Calculation finished in {0} Seconds.",
-                double.Parse(elapsed.Substring(elapsed.LastIndexOf(":", StringComparison.Ordinal) + 1)));
-
-            watch.Reset();
-
-            Console.WriteLine("Writing to file...");
-            watch.Start();
-            using var sw = File.CreateText(Filename);
-            foreach (var prime in primes) sw.WriteLine(prime);
-            watch.Stop();
-            elapsed = watch.Elapsed.ToString();
-            Console.WriteLine("Finished in {0} Seconds. \n",
-                double.Parse(elapsed.Substring(elapsed.LastIndexOf(":", StringComparison.Ordinal) + 1)));
         }
     }
 }

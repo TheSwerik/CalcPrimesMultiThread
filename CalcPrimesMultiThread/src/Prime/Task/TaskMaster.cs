@@ -62,7 +62,7 @@ namespace CalcPrimesMultiThread.Prime.Task
             var watch = new Stopwatch();
 
             watch.Start();
-            var primes = new Thread.Prime(Max).PrimeSieve((int) Max);
+            var primes = StaticPrime.PrimeSieve((int) Max);
             watch.Stop();
             var elapsed = watch.Elapsed.ToString();
             Console.WriteLine("Calculation finished in {0} Seconds.",
@@ -74,6 +74,7 @@ namespace CalcPrimesMultiThread.Prime.Task
             watch.Start();
             FileHelper.Restart();
             FileHelper.WriteFile(primes);
+            FileHelper.Dispose();
             watch.Stop();
             Console.WriteLine("Finished in {0}. \n", watch.Elapsed.ToString());
             Max = help;
