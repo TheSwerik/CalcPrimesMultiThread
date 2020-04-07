@@ -5,10 +5,43 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Frontend"
         mc:Ignorable="d"
-        Title="Calculate Primes Multithreaded" Height="720" Width="1280">
+        Title="Calculate Primes Multithreaded" Height="350" Width="525">
     <Grid>
-        <Button>
-            
-        </Button>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="20" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="20" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Column="1" Grid.Row="1" FontSize="15" Text="Infinite " Margin="10" />
+        <CheckBox Grid.Column="2" Grid.Row="1" Margin="10" Checked="CheckBox_OnChecked"
+                  Unchecked="CheckBox_OnUnchecked" />
+        <TextBlock Grid.Column="3" Grid.Row="1" x:Name="MaxNumberLabel" FontSize="15" Text="Maximum Number:"
+                   Margin="10" />
+        <TextBox Grid.Column="4" Grid.Row="1" x:Name="MaxNumberBox" Width="150" Margin="10" />
+
+        <RadioButton Grid.Column="1" Grid.Row="2" x:Name="ThreadRadioThread" FontSize="15" Content="Thread" Margin="10"
+                     Checked="ThreadRadioThread_OnChecked" />
+        <RadioButton Grid.Column="2" Grid.Row="2" x:Name="ThreadRadioTask" FontSize="15" Content="Task" Margin="10"
+                     Checked="ThreadRadioTask_OnChecked" />
+        <TextBlock Grid.Column="3" Grid.Row="2" x:Name="ThreadLabel" FontSize="15" Text="Number of Threads:"
+                   Margin="10" />
+        <TextBox Grid.Column="4" Grid.Row="2" x:Name="ThreadBox" Width="150" Margin="10" />
+
+        <Button Grid.Column="1" Grid.Row="3" x:Name="StartButton" Content="Start" Margin="10"
+                Click="StartButton_OnClick" />
     </Grid>
 </Window>
