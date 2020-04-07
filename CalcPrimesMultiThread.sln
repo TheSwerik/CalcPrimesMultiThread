@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalcPrimesMultiThread", "CalcPrimesMultiThread\CalcPrimesMultiThread.csproj", "{9CD8FFC7-1833-474B-B587-D5396E941D23}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backend", "Backend\Backend.csproj", "{9CD8FFC7-1833-474B-B587-D5396E941D23}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalcPrimesMultiThreadUI", "CalcPrimesMultiThreadUI\CalcPrimesMultiThreadUI.csproj", "{CD8BD042-52E7-4F3A-B7C0-3B6619C46B72}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frontend", "Frontend\Frontend.csproj", "{CD8BD042-52E7-4F3A-B7C0-3B6619C46B72}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

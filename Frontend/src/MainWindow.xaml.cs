@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace CalcPrimesMultiThreadUI
+namespace Frontend
 {
     public partial class MainWindow : Window
     {

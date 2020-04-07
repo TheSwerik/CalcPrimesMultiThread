@@ -1,7 +1,7 @@
-﻿<Application x:Class="CalcPrimesMultiThreadUI.App"
+﻿<Application x:Class="Frontend.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:CalcPrimesMultiThreadUI"
+             xmlns:local="clr-namespace:Frontend"
              StartupUri="src/MainWindow.xaml">
     <Application.Resources>
 
