@@ -5,7 +5,7 @@ using System.Linq;
 using System.Numerics;
 using System.Threading;
 
-namespace CalcPrimesMultiThread.Prime
+namespace CalcPrimesMultiThread.Prime.Thread
 {
     public static class ThreadMaster
     {
@@ -22,7 +22,7 @@ namespace CalcPrimesMultiThread.Prime
 
             // one Event will be used for every Prime Object
             var events = new WaitHandle[_n];
-            var primes = new Prime[_n];
+            var primes = new Thread.Prime[_n];
 
             // config and start ThreadPool
             Console.Write("Starting {0} Threads...", _n);
@@ -30,7 +30,7 @@ namespace CalcPrimesMultiThread.Prime
             for (var i = 0; i < _n; i++)
             {
                 events[i] = new ManualResetEvent(false);
-                primes[i] = new Prime(int.MaxValue - 57, (ManualResetEvent) events[i]);
+                primes[i] = new Thread.Prime(int.MaxValue - 57, (ManualResetEvent) events[i]);
             }
 
             Console.Write("\r" + new string(' ', 50) + "\r");
@@ -71,7 +71,7 @@ namespace CalcPrimesMultiThread.Prime
             var watch = new Stopwatch();
 
             watch.Start();
-            var primes = new Prime(Max).PrimeSieve((int) Max);
+            var primes = new Thread.Prime(Max).PrimeSieve((int) Max);
             watch.Stop();
             var elapsed = watch.Elapsed.ToString();
             Console.WriteLine("Calculation finished in {0} Seconds.",

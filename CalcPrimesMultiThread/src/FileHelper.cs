@@ -11,32 +11,32 @@ namespace CalcPrimesMultiThread
         private const string FileName = "Primes";
         private const string FileExtension = ".txt";
         private static int _fileNumber = 0;
-
+        private const int MaxSize = 500_000_000; // 500MB
+        private static FileStream _stream;
+        private static StreamWriter _writer;
+        
         public static BigInteger FindLastPrime()
         {
             while (File.Exists(FullFileName)) _fileNumber++;
             _fileNumber--;
-            return BigInteger.Parse(File.ReadLines(FullFileName).Last());
+            var result = BigInteger.Parse(File.ReadLines(FullFileName).Last());
+            _stream = new FileStream(FullFileName, FileMode.Append);
+            _writer = new StreamWriter(_stream);
+            return result;
         }
 
         public static void WriteFile<T>(IEnumerable<T> a)
         {
-            var stream = new FileStream(FullFileName, FileMode.Append);
-            var writer = new StreamWriter(stream);
             foreach (var i in a)
             {
-                writer.WriteLine(i);
-                if (stream.Length / 1_000_000 < 500) continue; // if less than 500MB
-                writer.DisposeAsync();
-                stream.DisposeAsync();
+                _writer.WriteLine(i);
+                if (_stream.Length < MaxSize) continue; // if less than 500MB
+                _writer.DisposeAsync();
+                _stream.DisposeAsync();
                 _fileNumber++;
-                stream = new FileStream(FullFileName, FileMode.Append);
-                writer = new StreamWriter(stream);
+                _stream = new FileStream(FullFileName, FileMode.Append);
+                _writer = new StreamWriter(_stream);
             }
-            Console.WriteLine(stream.Length);
-
-            writer.Dispose();
-            stream.Dispose();
         }
 
         private static string FullFileName => FileName + _fileNumber + FileExtension;
@@ -52,6 +52,12 @@ namespace CalcPrimesMultiThread
 
             _fileNumber = 0;
             File.Create(FullFileName).Dispose();
+        }
+
+        public static void Dispose()
+        {
+            _writer.Dispose();
+            _stream.Dispose();
         }
     }
 }

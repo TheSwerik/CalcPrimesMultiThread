@@ -6,7 +6,7 @@ using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
 
-namespace CalcPrimesMultiThread.Prime
+namespace CalcPrimesMultiThread.Prime.Task
 {
     public static class TaskMaster
     {
@@ -21,12 +21,13 @@ namespace CalcPrimesMultiThread.Prime
             Console.Write("\r" + new string(' ', 50) + "\r");
             Console.WriteLine("Starting at {0}.", lastPrime);
 
-            Console.WriteLine("\nStarting with calculaton...");
+            Console.Write("Starting calculation...");
             watch.Start();
 
             var current = lastPrime;
-            for (BigInteger i = 0; current < Max; i++, current = lastPrime + i * 10_000_000)
+            for (BigInteger i = 0; current < Max; current = lastPrime + ++i * 10_000_000)
             {
+                Console.Write("\rCalculating till {0}...", current + 10_000_000);
                 var bag = new ConcurrentBag<BigInteger>();
 
                 ParallelFor(current, current + 10_000_000, n =>
@@ -37,7 +38,6 @@ namespace CalcPrimesMultiThread.Prime
                 var list = bag.ToList();
                 list.Sort();
                 FileHelper.WriteFile(list);
-                Console.Write("\rCalculated till {0}.", current + 10_000_000);
             }
 
             watch.Stop();
@@ -62,7 +62,7 @@ namespace CalcPrimesMultiThread.Prime
             var watch = new Stopwatch();
 
             watch.Start();
-            var primes = new Prime(Max).PrimeSieve((int) Max);
+            var primes = new Thread.Prime(Max).PrimeSieve((int) Max);
             watch.Stop();
             var elapsed = watch.Elapsed.ToString();
             Console.WriteLine("Calculation finished in {0} Seconds.",

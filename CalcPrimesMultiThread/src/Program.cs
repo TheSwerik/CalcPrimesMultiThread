@@ -3,6 +3,8 @@ using System.Globalization;
 using System.Numerics;
 using System.Threading;
 using CalcPrimesMultiThread.Prime;
+using CalcPrimesMultiThread.Prime.Task;
+using CalcPrimesMultiThread.Prime.Thread;
 
 namespace CalcPrimesMultiThread
 {
@@ -18,8 +20,8 @@ namespace CalcPrimesMultiThread
 
             try
             {
-                Console.WriteLine("Until what number do you want to calculate?\n");
-                var max = BigInteger.Parse(Console.ReadLine() ?? throw new NullReferenceException());
+                Console.WriteLine("Until what number do you want to calculate?");
+                var max = BigInteger.Parse(Console.ReadLine() ?? "999999999999999999999999999999");
 
                 Console.WriteLine("Do you want to override any existing file?");
                 var shouldOverride = false;
@@ -65,6 +67,10 @@ namespace CalcPrimesMultiThread
             catch (FormatException)
             {
                 Console.WriteLine("Please enter a real number.");
+            }
+            finally
+            {
+                FileHelper.Dispose();
             }
         }
     }
