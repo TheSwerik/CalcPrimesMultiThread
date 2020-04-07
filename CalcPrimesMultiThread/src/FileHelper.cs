@@ -34,8 +34,8 @@ namespace CalcPrimesMultiThread
             {
                 _writer.WriteLine(i);
                 if (_stream.Length < MaxSize) continue; // if less than 500MB
-                _writer.DisposeAsync();
-                _stream.DisposeAsync();
+                _writer.Dispose();
+                _stream.Dispose();
                 _fileNumber++;
                 _stream = new FileStream(FullFileName, FileMode.Append);
                 _writer = new StreamWriter(_stream);

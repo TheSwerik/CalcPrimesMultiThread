@@ -36,7 +36,7 @@ namespace CalcPrimesMultiThread.Prime.Task
             for (var i = (root & 1) == 0 ? root + 1 : root + 2; i < n; i += 2)
                 if (!sieve[i])
                     primes.Add(i);
-            return primes.ToArray();
+            return primes;
         }
     }
 }

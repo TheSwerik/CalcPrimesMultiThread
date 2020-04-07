@@ -37,6 +37,7 @@ namespace CalcPrimesMultiThread.Prime.Task
 
                 var list = bag.ToList();
                 list.Sort();
+                Console.Write("\rWriting from {0} to {1} to File...", current, current + 10_000_000);
                 FileHelper.WriteFile(list);
             }
 
