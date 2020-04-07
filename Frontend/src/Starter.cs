@@ -31,8 +31,7 @@ namespace Frontend
                 }
                 else
                 {
-                    if (FileHelper.FindLastPrime() <= max) return;
-                    Console.WriteLine("3");
+                    if (maxN.HasValue && FileHelper.FindLastPrime() <= max) return;
                     if (max <= MaxSieveValue) TaskMaster.StartSieve(max);
                     else if (task) TaskMaster.Start();
                     else ThreadMaster.Start(threadCount ?? 0);
