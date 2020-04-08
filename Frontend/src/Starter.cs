@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Numerics;
 using System.Threading;
 using CalcPrimesMultiThread;
 using CalcPrimesMultiThread.Prime.Task;
@@ -21,7 +22,7 @@ namespace Frontend
             var token = (CancellationToken) obj;
             try
             {
-                CustomConsole.WriteLine("Starting...");
+                CustomConsole.WriteLine("Starting..." + Environment.NewLine);
                 var max = MaxN ?? BigInteger.Parse("999999999999999999999999999999");
                 ThreadMaster.Max = max;
                 TaskMaster.Max = max;

@@ -78,6 +78,7 @@ namespace CalcPrimesMultiThread.Prime.Task
             var elapsed = watch.Elapsed.ToString();
             CustomConsole.WriteLine(
                 $"Calculation finished in {double.Parse(elapsed.Substring(elapsed.LastIndexOf(":", StringComparison.Ordinal) + 1))} Seconds.");
+            CustomConsole.NewLine();
 
             watch.Reset();
 
@@ -88,6 +89,7 @@ namespace CalcPrimesMultiThread.Prime.Task
             FileHelper.Dispose();
             watch.Stop();
             CustomConsole.WriteLine($"Finished in {watch.Elapsed.ToString()}.");
+            CustomConsole.NewLine();
             Max = help;
         }
     }
