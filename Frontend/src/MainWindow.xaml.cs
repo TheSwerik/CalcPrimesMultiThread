@@ -1,7 +1,10 @@
 ﻿using System;
+using System.IO;
 using System.Numerics;
 using System.Text.RegularExpressions;
 using System.Windows;
+using Microsoft.Win32;
+using Microsoft.WindowsAPICodePack.Dialogs;
 
 namespace Frontend
 {
@@ -11,6 +14,7 @@ namespace Frontend
         {
             InitializeComponent();
             ThreadRadioThread.IsChecked = true;
+            OutputTextField.Text = Environment.CurrentDirectory;
         }
 
         private void StartButton_OnClick(object sender, RoutedEventArgs e)
@@ -23,7 +27,8 @@ namespace Frontend
                 return;
             }
 
-            if ((!MaxNumberCheckBox.IsChecked ?? false) && ((maxNumber = BigInteger.Parse(MaxNumberBox.Text)) < BigInteger.One * 2))
+            if ((!MaxNumberCheckBox.IsChecked ?? false) &&
+                ((maxNumber = BigInteger.Parse(MaxNumberBox.Text)) < BigInteger.One * 2))
             {
                 MessageBox.Show("Maximum Number should not be below 2!", "ERROR", MessageBoxButton.OK);
                 return;
@@ -83,6 +88,19 @@ namespace Frontend
         private static bool IsLegitNumber(string text)
         {
             return text != null && Regex.IsMatch(text, "[0-9]+");
+        }
+
+        private void Button_OnClick(object sender, RoutedEventArgs e)
+        {
+            var folderDialog = new CommonOpenFileDialog
+            {
+                IsFolderPicker = true,
+                Title = "Select Output Folder",
+                DefaultDirectory = OutputTextField.Text,
+                InitialDirectory = OutputTextField.Text
+            };
+            if (folderDialog.ShowDialog() == CommonFileDialogResult.Ok) OutputTextField.Text = folderDialog.FileName;
+            folderDialog.Dispose();
         }
     }
 }
