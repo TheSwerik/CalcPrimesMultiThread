@@ -2,14 +2,21 @@
 using System.IO;
 using System.Numerics;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using Microsoft.Win32;
 using Microsoft.WindowsAPICodePack.Dialogs;
+using Microsoft.WindowsAPICodePack.Shell.PropertySystem;
 
 namespace Frontend
 {
     public partial class MainWindow : Window
     {
+        private Thread _calcThread;
+        private CancellationTokenSource _cancelToken;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -53,11 +60,21 @@ namespace Frontend
                 if (MessageBox.Show("Are you really sure?", "WARNING",
                     MessageBoxButton.YesNo) != MessageBoxResult.Yes) return;
 
-                Starter.Start((!ThreadRadioThread.IsChecked ?? false), true, threadCount, maxNumber);
+                _cancelToken = new CancellationTokenSource();
+                Starter.Task = !ThreadRadioThread.IsChecked ?? false;
+                Starter.ShouldOverride = true;
+                Starter.ThreadCount = threadCount;
+                Starter.MaxN = maxNumber;
+                ThreadPool.QueueUserWorkItem(new WaitCallback(Starter.Start), _cancelToken.Token);
             }
             else
             {
-                Starter.Start((!ThreadRadioThread.IsChecked ?? false), false, threadCount, maxNumber);
+                _cancelToken = new CancellationTokenSource();
+                Starter.Task = !ThreadRadioThread.IsChecked ?? false;
+                Starter.ShouldOverride = false;
+                Starter.ThreadCount = threadCount;
+                Starter.MaxN = maxNumber;
+                ThreadPool.QueueUserWorkItem(new WaitCallback(Starter.Start), _cancelToken.Token);
             }
         }
 
@@ -100,7 +117,19 @@ namespace Frontend
                 InitialDirectory = OutputTextField.Text
             };
             if (folderDialog.ShowDialog() == CommonFileDialogResult.Ok) OutputTextField.Text = folderDialog.FileName;
+
             folderDialog.Dispose();
+        }
+
+        private void OutputTextField_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            Environment.CurrentDirectory = OutputTextField.Text;
+        }
+
+        private void Window_OnClosed(object? sender, EventArgs e)
+        {
+            // _cancelToken?.Cancel();
+            Environment.Exit(Environment.ExitCode);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Threading;
 
 namespace CalcPrimesMultiThread.Prime.Task
 {
@@ -20,12 +21,12 @@ namespace CalcPrimesMultiThread.Prime.Task
             return true;
         }
 
-        public static IEnumerable<int> PrimeSieve(int n)
+        public static IEnumerable<int> PrimeSieve(int n, CancellationToken token)
         {
             var sieve = new bool[n + 1];
             var primes = new List<int> {2};
             var root = (int) Math.Sqrt(n);
-            for (long i = 3; i <= root; i += 2)
+            for (long i = 3; i <= root && !token.IsCancellationRequested; i += 2)
                 if (!sieve[i])
                 {
                     primes.Add((int) i);
@@ -33,7 +34,7 @@ namespace CalcPrimesMultiThread.Prime.Task
                     for (var j = i * i; j < sieve.Length; j += add) sieve[j] = true;
                 }
 
-            for (var i = (root & 1) == 0 ? root + 1 : root + 2; i < n; i += 2)
+            for (var i = (root & 1) == 0 ? root + 1 : root + 2; i < n && !token.IsCancellationRequested; i += 2)
                 if (!sieve[i])
                     primes.Add(i);
             return primes;
