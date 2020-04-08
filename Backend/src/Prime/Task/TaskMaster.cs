@@ -38,7 +38,7 @@ namespace CalcPrimesMultiThread.Prime.Task
                 var list = bag.ToList();
                 list.Sort();
                 Console.Write("\rWriting from {0} to {1} to File...", current, current + 10_000_000);
-                FileHelper.WriteFile(list);
+                FileHelper.WriteFile(list, null);
             }
 
             watch.Stop();
@@ -63,7 +63,7 @@ namespace CalcPrimesMultiThread.Prime.Task
             var watch = new Stopwatch();
 
             watch.Start();
-            var primes = StaticPrime.PrimeSieve((int) Max);
+            var primes = StaticPrime.PrimeSieve((int) Max, null);
             watch.Stop();
             var elapsed = watch.Elapsed.ToString();
             Console.WriteLine("Calculation finished in {0} Seconds.",
@@ -74,7 +74,7 @@ namespace CalcPrimesMultiThread.Prime.Task
             Console.WriteLine("Writing to file...");
             watch.Start();
             FileHelper.Restart();
-            FileHelper.WriteFile(primes);
+            FileHelper.WriteFile(primes, null);
             FileHelper.Dispose();
             watch.Stop();
             Console.WriteLine("Finished in {0}. \n", watch.Elapsed.ToString());
