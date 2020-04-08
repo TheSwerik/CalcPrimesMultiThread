@@ -14,7 +14,6 @@ namespace Frontend
 {
     public partial class MainWindow : Window
     {
-        private Thread _calcThread;
         private CancellationTokenSource _cancelToken;
 
         public MainWindow()
