@@ -6,17 +6,15 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using Microsoft.Win32;
 using Microsoft.WindowsAPICodePack.Dialogs;
-using Microsoft.WindowsAPICodePack.Shell.PropertySystem;
 
 namespace Frontend
 {
     public partial class MainWindow : Window
     {
         private CancellationTokenSource _cancelToken;
-        private StringWriter _consoleOutput;
-        private TextWriter oldConsoleOutput;
+        private readonly StringWriter _consoleOutput;
+        private readonly TextWriter oldConsoleOutput;
 
         public MainWindow()
         {
@@ -30,7 +28,7 @@ namespace Frontend
         private void Update()
         {
             TextReader reader = new StringReader("");
-            while (true)
+            while (!(_cancelToken?.IsCancellationRequested ?? false))
             {
                 Thread.Sleep(1000);
                 if (_consoleOutput.GetStringBuilder().ToString().Length == 0) continue;
@@ -52,7 +50,7 @@ namespace Frontend
             }
 
             if ((!MaxNumberCheckBox.IsChecked ?? false) &&
-                ((maxNumber = BigInteger.Parse(MaxNumberBox.Text)) < BigInteger.One * 2))
+                (maxNumber = BigInteger.Parse(MaxNumberBox.Text)) < BigInteger.One * 2)
             {
                 MessageBox.Show("Maximum Number should not be below 2!", "ERROR", MessageBoxButton.OK);
                 return;
@@ -82,7 +80,7 @@ namespace Frontend
                 Starter.ShouldOverride = true;
                 Starter.ThreadCount = threadCount;
                 Starter.MaxN = maxNumber;
-                ThreadPool.QueueUserWorkItem(new WaitCallback(Starter.Start), _cancelToken.Token);
+                ThreadPool.QueueUserWorkItem(Starter.Start, _cancelToken.Token);
             }
             else
             {
@@ -91,7 +89,7 @@ namespace Frontend
                 Starter.ShouldOverride = false;
                 Starter.ThreadCount = threadCount;
                 Starter.MaxN = maxNumber;
-                ThreadPool.QueueUserWorkItem(new WaitCallback(Starter.Start), _cancelToken.Token);
+                ThreadPool.QueueUserWorkItem(Starter.Start, _cancelToken.Token);
             }
 
             StartButton.Visibility = Visibility.Hidden;

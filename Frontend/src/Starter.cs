@@ -2,10 +2,9 @@
 using System.Globalization;
 using System.Numerics;
 using System.Threading;
-using System.Windows.Controls.Ribbon;
 using CalcPrimesMultiThread;
+using CalcPrimesMultiThread.Prime.Task;
 using CalcPrimesMultiThread.Prime.Thread;
-using Frontend.Master;
 
 namespace Frontend
 {

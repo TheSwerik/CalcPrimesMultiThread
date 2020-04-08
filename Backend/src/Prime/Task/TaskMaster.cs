@@ -4,19 +4,21 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CalcPrimesMultiThread.Prime.Task
 {
     public static class TaskMaster
     {
+        private const long Step = 1_000_000;
         public static BigInteger Max { get; set; }
 
-        public static void Start()
+        public static void Start(CancellationToken? token)
         {
             var watch = new Stopwatch();
 
-            Console.Write("Picking up, where we left off...");
+            Console.Write("\rPicking up, where we left off...");
             var lastPrime = FileHelper.FindLastPrime();
             Console.Write("\r" + new string(' ', 50) + "\r");
             Console.WriteLine("Starting at {0}.", lastPrime);
@@ -25,24 +27,28 @@ namespace CalcPrimesMultiThread.Prime.Task
             watch.Start();
 
             var current = lastPrime;
-            for (BigInteger i = 0; current < Max; current = lastPrime + ++i * 10_000_000)
+            for (BigInteger i = 0;
+                current < Max && !(token?.IsCancellationRequested ?? false);
+                current = lastPrime + ++i * Step)
             {
-                Console.Write("\rCalculating till {0}...", current + 10_000_000);
+                Console.Write("\rCalculating till {0}...", current + Step);
                 var bag = new ConcurrentBag<BigInteger>();
 
-                ParallelFor(current, current + 10_000_000, n =>
+                ParallelFor(current, current + Step, n =>
                 {
                     if (StaticPrime.IsPrime(n)) bag.Add(n);
                 });
 
                 var list = bag.ToList();
                 list.Sort();
-                Console.Write("\rWriting from {0} to {1} to File...", current, current + 10_000_000);
-                FileHelper.WriteFile(list, null);
+                FileHelper.WriteFile(list, token);
             }
 
             watch.Stop();
-            Console.WriteLine("\nFinished in {0} .", watch.Elapsed.ToString());
+            FileHelper.Dispose();
+            Console.WriteLine("\nCalculated for: {0}. Biggest Prime found: {1}",
+                watch.Elapsed.ToString().Substring(0, watch.Elapsed.ToString().LastIndexOf('.')),
+                FileHelper.FindLastPrime());
         }
 
         private static IEnumerable<BigInteger> Range(BigInteger fromInclusive, BigInteger toExclusive)
@@ -55,7 +61,7 @@ namespace CalcPrimesMultiThread.Prime.Task
             Parallel.ForEach(Range(fromInclusive, toExclusive), body);
         }
 
-        public static void StartSieve(BigInteger max)
+        public static void StartSieve(BigInteger max, CancellationToken? token)
         {
             var help = Max;
             Max = max;
@@ -63,7 +69,7 @@ namespace CalcPrimesMultiThread.Prime.Task
             var watch = new Stopwatch();
 
             watch.Start();
-            var primes = StaticPrime.PrimeSieve((int) Max, null);
+            var primes = StaticPrime.PrimeSieve((int) Max, token);
             watch.Stop();
             var elapsed = watch.Elapsed.ToString();
             Console.WriteLine("Calculation finished in {0} Seconds.",
@@ -74,7 +80,7 @@ namespace CalcPrimesMultiThread.Prime.Task
             Console.WriteLine("Writing to file...");
             watch.Start();
             FileHelper.Restart();
-            FileHelper.WriteFile(primes, null);
+            FileHelper.WriteFile(primes, token);
             FileHelper.Dispose();
             watch.Stop();
             Console.WriteLine("Finished in {0}. \n", watch.Elapsed.ToString());
