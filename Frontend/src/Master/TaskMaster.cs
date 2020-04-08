@@ -13,6 +13,7 @@ namespace Frontend.Master
 {
     public static class TaskMaster
     {
+        private const long Step = 1_000_000;
         public static BigInteger Max { get; set; }
 
         public static void Start(CancellationToken token)
@@ -30,24 +31,26 @@ namespace Frontend.Master
             var current = lastPrime;
             for (BigInteger i = 0;
                 current < Max && !token.IsCancellationRequested;
-                current = lastPrime + ++i * 1_000_000)
+                current = lastPrime + ++i * Step)
             {
-                Console.Write("\rCalculating till {0}...", current + 10_000_000);
+                Console.Write("\rCalculating till {0}...", current + Step);
                 var bag = new ConcurrentBag<BigInteger>();
 
-                ParallelFor(current, current + 10_000_000, n =>
+                ParallelFor(current, current + Step, n =>
                 {
                     if (StaticPrime.IsPrime(n)) bag.Add(n);
                 });
 
                 var list = bag.ToList();
                 list.Sort();
-                Console.Write("\rWriting from {0} to {1} to File...", current, current + 10_000_000);
                 FileHelper.WriteFile(list, token);
             }
 
             watch.Stop();
-            Console.WriteLine("\nFinished in {0} .", watch.Elapsed.ToString());
+            FileHelper.Dispose();
+            Console.WriteLine("\nCalculated for: {0}. Biggest Prime found: {1}",
+                watch.Elapsed.ToString().Substring(0, watch.Elapsed.ToString().LastIndexOf('.')), 
+                FileHelper.FindLastPrime());
         }
 
         private static IEnumerable<BigInteger> Range(BigInteger fromInclusive, BigInteger toExclusive)

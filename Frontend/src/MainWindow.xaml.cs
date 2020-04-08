@@ -76,6 +76,17 @@ namespace Frontend
                 Starter.MaxN = maxNumber;
                 ThreadPool.QueueUserWorkItem(new WaitCallback(Starter.Start), _cancelToken.Token);
             }
+            StartButton.Visibility = Visibility.Hidden;
+            CancelButton.Visibility = Visibility.Visible;
+        }
+
+        private void CancelButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            _cancelToken?.Cancel();
+            _cancelToken?.Dispose();
+            StartButton.Visibility = Visibility.Visible;
+            CancelButton.Visibility = Visibility.Hidden;
+            Console.WriteLine("\nCanceling...");
         }
 
         private void CheckBox_OnChecked(object sender, RoutedEventArgs e)
@@ -128,7 +139,6 @@ namespace Frontend
 
         private void Window_OnClosed(object? sender, EventArgs e)
         {
-            // _cancelToken?.Cancel();
             Environment.Exit(Environment.ExitCode);
         }
     }
