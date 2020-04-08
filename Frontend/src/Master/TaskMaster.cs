@@ -20,7 +20,7 @@ namespace Frontend.Master
         {
             var watch = new Stopwatch();
 
-            Console.Write("Picking up, where we left off...");
+            Console.Write("\rPicking up, where we left off...");
             var lastPrime = FileHelper.FindLastPrime();
             Console.Write("\r" + new string(' ', 50) + "\r");
             Console.WriteLine("Starting at {0}.", lastPrime);

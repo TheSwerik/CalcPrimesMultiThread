@@ -25,7 +25,7 @@ namespace Frontend
             Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US");
             try
             {
-                Console.WriteLine("\nStarting...");
+                Console.Write("Starting...");
                 var max = MaxN ?? BigInteger.Parse("999999999999999999999999999999");
                 ThreadMaster.Max = max;
                 TaskMaster.Max = max;

@@ -15,12 +15,30 @@ namespace Frontend
     public partial class MainWindow : Window
     {
         private CancellationTokenSource _cancelToken;
+        private StringWriter _consoleOutput;
+        private TextWriter oldConsoleOutput;
 
         public MainWindow()
         {
             InitializeComponent();
             ThreadRadioThread.IsChecked = true;
             OutputTextField.Text = Environment.CurrentDirectory;
+            oldConsoleOutput = Console.Out;
+            Console.SetOut(_consoleOutput = new StringWriter());
+        }
+
+        private void Update()
+        {
+            TextReader reader = new StringReader("");
+            while (true)
+            {
+                Thread.Sleep(1000);
+                if (_consoleOutput.GetStringBuilder().ToString().Length == 0) continue;
+                Console.SetOut(oldConsoleOutput);
+                Console.Write(_consoleOutput.GetStringBuilder().ToString());
+                _consoleOutput.GetStringBuilder().Clear();
+                Console.SetOut(_consoleOutput);
+            }
         }
 
         private void StartButton_OnClick(object sender, RoutedEventArgs e)
@@ -75,8 +93,10 @@ namespace Frontend
                 Starter.MaxN = maxNumber;
                 ThreadPool.QueueUserWorkItem(new WaitCallback(Starter.Start), _cancelToken.Token);
             }
+
             StartButton.Visibility = Visibility.Hidden;
             CancelButton.Visibility = Visibility.Visible;
+            Task.Run(Update);
         }
 
         private void CancelButton_OnClick(object sender, RoutedEventArgs e)
