@@ -18,13 +18,14 @@ namespace CalcPrimesMultiThread
 
         public static BigInteger FindLastPrime()
         {
+            Dispose();
             if (!File.Exists(FullFileName)) return 0;
             while (File.Exists(FullFileName)) _fileNumber++;
             _fileNumber--;
 
             var result = BigInteger.Parse(File.ReadLines(FullFileName).Last());
-            _stream ??= new FileStream(FullFileName, FileMode.Append);
-            _writer ??= new StreamWriter(_stream);
+            _stream = new FileStream(FullFileName, FileMode.Append);
+            _writer = new StreamWriter(_stream);
             return result;
         }
 

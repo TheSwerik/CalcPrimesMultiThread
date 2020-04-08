@@ -35,7 +35,10 @@ namespace Frontend
                 else
                 {
                     if (MaxN.HasValue && FileHelper.FindLastPrime() <= max) return;
-                    if (MaxN.HasValue && max <= MaxSieveValue) TaskMaster.StartSieve(max, token);
+                    if (MaxN.HasValue && max <= MaxSieveValue)
+                    {
+                        TaskMaster.StartSieve(max, token);
+                    }
                     else
                     {
                         if (FileHelper.FindLastPrime() <= MaxSieveValue) TaskMaster.StartSieve(MaxSieveValue, token);
@@ -47,6 +50,7 @@ namespace Frontend
             finally
             {
                 FileHelper.Dispose();
+                MainWindow.Finished = true;
             }
         }
     }

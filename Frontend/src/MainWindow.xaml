@@ -23,7 +23,6 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="1.25*" />
         </Grid.RowDefinitions>
 
@@ -61,9 +60,14 @@
         <Button Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="4" FontSize="20" x:Name="CancelButton" Content="Cancel"
                 Margin="10" Visibility="Hidden" Click="CancelButton_OnClick" IsCancel="True" />
 
-        <Border Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="4" Background="#D1D1D1" Margin="10" CornerRadius="3">
+        <Border Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="4" Background="#D1D1D1" Margin="10 10 10 0"
+                CornerRadius="3">
             <TextBlock FontSize="15" Background="#F2F2F2" Height="200" Margin="3" x:Name="ConsoleTextBlock"
                        FontFamily="monospace" />
         </Border>
+
+        <ProgressBar Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="4" Margin="11 0 11 11" IsIndeterminate="True"
+                     Height="10" Visibility="Hidden" x:Name="ProgressBar" />
+
     </Grid>
 </Window>

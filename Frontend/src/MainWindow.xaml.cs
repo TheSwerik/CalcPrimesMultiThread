@@ -13,6 +13,7 @@ namespace Frontend
 {
     public partial class MainWindow : Window
     {
+        public static bool Finished = true;
         private CancellationTokenSource _cancelToken;
 
         public MainWindow()
@@ -22,23 +23,6 @@ namespace Frontend
             OutputTextField.Text = Environment.CurrentDirectory;
             Task.Run(Update);
             Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US");
-        }
-
-        private void Update()
-        {
-            while (true)
-            {
-                Thread.Sleep(1000);
-                ConsoleTextBlock.Dispatcher.Invoke(
-                    new UpdateTextCallback(UpdateText),
-                    CustomConsole.Output()
-                );
-            }
-        }
-
-        private void UpdateText(string message)
-        {
-            ConsoleTextBlock.Text = "" + message;
         }
 
         private void StartButton_OnClick(object sender, RoutedEventArgs e)
@@ -102,6 +86,8 @@ namespace Frontend
 
             StartButton.Visibility = Visibility.Hidden;
             CancelButton.Visibility = Visibility.Visible;
+            ProgressBar.Visibility = Visibility.Visible;
+            Finished = false;
         }
 
         private void CancelButton_OnClick(object sender, RoutedEventArgs e)
@@ -109,8 +95,17 @@ namespace Frontend
             CustomConsole.WriteLine("Canceling...");
             _cancelToken?.Cancel();
             _cancelToken?.Dispose();
-            StartButton.Visibility = Visibility.Visible;
-            CancelButton.Visibility = Visibility.Hidden;
+            CancelButton.IsEnabled = false;
+            Task.Run(() =>
+                     {
+                         while (!Finished)
+                         {
+                         }
+
+                         StartButton.Dispatcher.Invoke(new UpdateStartButtonCallback(ActivateStartButton));
+                         CancelButton.Dispatcher.Invoke(new UpdateCancelButtonCallback(DeactivateCancelButton));
+                         ProgressBar.Dispatcher.Invoke(new UpdateProgressBarCallback(DeactivateProgressBar));
+                     });
         }
 
         private void CheckBox_OnChecked(object sender, RoutedEventArgs e)
@@ -166,6 +161,46 @@ namespace Frontend
             Environment.Exit(Environment.ExitCode);
         }
 
-        private delegate void UpdateTextCallback(string message);
+        // Helper Methods:
+        private void Update()
+        {
+            while (true)
+            {
+                Thread.Sleep(1000);
+                ConsoleTextBlock.Dispatcher.Invoke(
+                    new UpdateConsoleCallback(UpdateConsoleText),
+                    CustomConsole.Output()
+                );
+            }
+        }
+
+        private void UpdateConsoleText(string message)
+        {
+            ConsoleTextBlock.Text = "" + message;
+        }
+
+        private void ActivateStartButton()
+        {
+            StartButton.Visibility = Visibility.Visible;
+        }
+
+        private void DeactivateProgressBar()
+        {
+            ProgressBar.Visibility = Visibility.Hidden;
+        }
+
+        private void DeactivateCancelButton()
+        {
+            CancelButton.Visibility = Visibility.Hidden;
+            CancelButton.IsEnabled = true;
+        }
+
+        private delegate void UpdateConsoleCallback(string message);
+
+        private delegate void UpdateStartButtonCallback();
+
+        private delegate void UpdateCancelButtonCallback();
+
+        private delegate void UpdateProgressBarCallback();
     }
 }
