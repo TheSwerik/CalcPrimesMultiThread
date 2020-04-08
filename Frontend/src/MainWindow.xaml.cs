@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using CalcPrimesMultiThread.Prime.util;
 using Microsoft.WindowsAPICodePack.Dialogs;
 
 namespace Frontend
@@ -13,7 +14,6 @@ namespace Frontend
     public partial class MainWindow : Window
     {
         private CancellationTokenSource _cancelToken;
-        private readonly StringWriter _consoleOutput;
 
         private delegate void UpdateTextCallback(string message);
 
@@ -22,7 +22,6 @@ namespace Frontend
             InitializeComponent();
             ThreadRadioThread.IsChecked = true;
             OutputTextField.Text = Environment.CurrentDirectory;
-            Console.SetOut(_consoleOutput = new StringWriter());
             Task.Run(Update);
         }
 
@@ -33,7 +32,7 @@ namespace Frontend
                 Thread.Sleep(1000);
                 ConsoleTextBlock.Dispatcher.Invoke(
                     new UpdateTextCallback(this.UpdateText),
-                    _consoleOutput.GetStringBuilder().ToString()
+                    CustomConsole.Output()
                 );
             }
         }
@@ -75,10 +74,10 @@ namespace Frontend
                     MessageBoxButton.YesNo) != MessageBoxResult.Yes) return;
                 if (MessageBox.Show("Are you really sure?", "WARNING",
                     MessageBoxButton.YesNo) != MessageBoxResult.Yes) return;
-                
+
                 ConsoleTextBlock.Text = "";
-                _consoleOutput.GetStringBuilder().Clear();
-                
+                CustomConsole.Clear();
+
                 _cancelToken = new CancellationTokenSource();
                 Starter.Task = !ThreadRadioThread.IsChecked ?? false;
                 Starter.ShouldOverride = true;
@@ -89,8 +88,8 @@ namespace Frontend
             else
             {
                 ConsoleTextBlock.Text = "";
-                _consoleOutput.GetStringBuilder().Clear();
-                
+                CustomConsole.Clear();
+
                 _cancelToken = new CancellationTokenSource();
                 Starter.Task = !ThreadRadioThread.IsChecked ?? false;
                 Starter.ShouldOverride = false;
@@ -105,7 +104,7 @@ namespace Frontend
 
         private void CancelButton_OnClick(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine("\nCanceling...");
+            CustomConsole.WriteLine("Canceling...");
             _cancelToken?.Cancel();
             _cancelToken?.Dispose();
             StartButton.Visibility = Visibility.Visible;

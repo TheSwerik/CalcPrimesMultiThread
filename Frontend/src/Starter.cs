@@ -5,6 +5,7 @@ using System.Threading;
 using CalcPrimesMultiThread;
 using CalcPrimesMultiThread.Prime.Task;
 using CalcPrimesMultiThread.Prime.Thread;
+using CalcPrimesMultiThread.Prime.util;
 
 namespace Frontend
 {
@@ -24,7 +25,7 @@ namespace Frontend
             Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US");
             try
             {
-                Console.Write("Starting...");
+                CustomConsole.WriteLine("Starting...");
                 var max = MaxN ?? BigInteger.Parse("999999999999999999999999999999");
                 ThreadMaster.Max = max;
                 TaskMaster.Max = max;
