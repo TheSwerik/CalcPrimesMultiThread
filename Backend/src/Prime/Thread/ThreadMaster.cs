@@ -55,7 +55,7 @@ namespace CalcPrimesMultiThread.Prime.Thread
                 // Wait for all Threads
                 WaitHandle.WaitAll(events);
 
-                FileHelper.WriteFile((from prime in primes where prime.IsPrime select prime.N).ToList(), null);
+                FileHelper.WriteFile((from prime in primes where prime.IsPrime select prime.N).ToList());
             }
 
             watch.Stop();

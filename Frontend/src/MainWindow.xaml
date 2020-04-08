@@ -7,14 +7,6 @@
         mc:Ignorable="d"
         Title="Calculate Primes Multithreaded" Height="720" Width="1280" Closed="Window_OnClosed">
     <Grid>
-        <!-- <Grid.ColumnDefinitions> -->
-        <!--     <ColumnDefinition Width="20" /> -->
-        <!--     <ColumnDefinition Width="*" /> -->
-        <!--     <ColumnDefinition Width="*" /> -->
-        <!--     <ColumnDefinition Width="1.8*" /> -->
-        <!--     <ColumnDefinition Width="1.95*" /> -->
-        <!--     <ColumnDefinition Width="20" /> -->
-        <!-- </Grid.ColumnDefinitions> -->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
@@ -25,6 +17,8 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -66,5 +60,9 @@
                 Click="StartButton_OnClick" />
         <Button Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="4" FontSize="20" x:Name="CancelButton" Content="Cancel"
                 Margin="10" Visibility="Hidden" Click="CancelButton_OnClick" IsCancel="True" />
+
+        <Border Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="4" Background="#D1D1D1" Margin="10" CornerRadius="3">
+            <TextBlock FontSize="15" Background="#F2F2F2" Height="200" Margin="3" x:Name="ConsoleTextBlock" FontFamily="monospace"/>
+        </Border>
     </Grid>
 </Window>

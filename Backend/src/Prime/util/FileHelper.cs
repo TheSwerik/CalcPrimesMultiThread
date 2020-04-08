@@ -27,13 +27,12 @@ namespace CalcPrimesMultiThread
             return result;
         }
 
-        public static void WriteFile<T>(IEnumerable<T> a, CancellationToken? token)
+        public static void WriteFile<T>(IEnumerable<T> a)
         {
             _stream ??= new FileStream(FullFileName, FileMode.Append);
             _writer ??= new StreamWriter(_stream);
             foreach (var i in a)
             {
-                if (token?.IsCancellationRequested ?? false) return;
                 _writer.WriteLine(i);
                 if (_stream.Length < MaxSize) continue; // if less than 500MB
                 _writer.Dispose();
@@ -61,6 +60,8 @@ namespace CalcPrimesMultiThread
         {
             _writer?.Dispose();
             _stream?.Dispose();
+            _writer = null;
+            _stream = null;
         }
     }
 }

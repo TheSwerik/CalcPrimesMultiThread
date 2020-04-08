@@ -41,7 +41,7 @@ namespace CalcPrimesMultiThread.Prime.Task
 
                 var list = bag.ToList();
                 list.Sort();
-                FileHelper.WriteFile(list, token);
+                FileHelper.WriteFile(list);
             }
 
             watch.Stop();
@@ -80,7 +80,7 @@ namespace CalcPrimesMultiThread.Prime.Task
             Console.WriteLine("Writing to file...");
             watch.Start();
             FileHelper.Restart();
-            FileHelper.WriteFile(primes, token);
+            FileHelper.WriteFile(primes);
             FileHelper.Dispose();
             watch.Stop();
             Console.WriteLine("Finished in {0}. \n", watch.Elapsed.ToString());
