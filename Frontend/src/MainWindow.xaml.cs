@@ -1,5 +1,5 @@
 ﻿using System;
-using System.IO;
+using System.Globalization;
 using System.Numerics;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -15,14 +15,13 @@ namespace Frontend
     {
         private CancellationTokenSource _cancelToken;
 
-        private delegate void UpdateTextCallback(string message);
-
         public MainWindow()
         {
             InitializeComponent();
             ThreadRadioThread.IsChecked = true;
             OutputTextField.Text = Environment.CurrentDirectory;
             Task.Run(Update);
+            Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US");
         }
 
         private void Update()
@@ -31,13 +30,16 @@ namespace Frontend
             {
                 Thread.Sleep(1000);
                 ConsoleTextBlock.Dispatcher.Invoke(
-                    new UpdateTextCallback(this.UpdateText),
+                    new UpdateTextCallback(UpdateText),
                     CustomConsole.Output()
                 );
             }
         }
 
-        private void UpdateText(string message) => ConsoleTextBlock.Text = "" + message;
+        private void UpdateText(string message)
+        {
+            ConsoleTextBlock.Text = "" + message;
+        }
 
         private void StartButton_OnClick(object sender, RoutedEventArgs e)
         {
@@ -71,9 +73,9 @@ namespace Frontend
             if (OverrideCheckBox.IsChecked ?? false)
             {
                 if (MessageBox.Show("Are you sure that you want to override / delete all existing Files?", "WARNING",
-                    MessageBoxButton.YesNo) != MessageBoxResult.Yes) return;
+                                    MessageBoxButton.YesNo) != MessageBoxResult.Yes) return;
                 if (MessageBox.Show("Are you really sure?", "WARNING",
-                    MessageBoxButton.YesNo) != MessageBoxResult.Yes) return;
+                                    MessageBoxButton.YesNo) != MessageBoxResult.Yes) return;
 
                 ConsoleTextBlock.Text = "";
                 CustomConsole.Clear();
@@ -143,12 +145,12 @@ namespace Frontend
         private void Button_OnClick(object sender, RoutedEventArgs e)
         {
             var folderDialog = new CommonOpenFileDialog
-            {
-                IsFolderPicker = true,
-                Title = "Select Output Folder",
-                DefaultDirectory = OutputTextField.Text,
-                InitialDirectory = OutputTextField.Text
-            };
+                               {
+                                   IsFolderPicker = true,
+                                   Title = "Select Output Folder",
+                                   DefaultDirectory = OutputTextField.Text,
+                                   InitialDirectory = OutputTextField.Text
+                               };
             if (folderDialog.ShowDialog() == CommonFileDialogResult.Ok) OutputTextField.Text = folderDialog.FileName;
 
             folderDialog.Dispose();
@@ -163,5 +165,7 @@ namespace Frontend
         {
             Environment.Exit(Environment.ExitCode);
         }
+
+        private delegate void UpdateTextCallback(string message);
     }
 }

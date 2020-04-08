@@ -1,6 +1,4 @@
-﻿using System;
-using System.Globalization;
-using System.Numerics;
+﻿using System.Numerics;
 using System.Threading;
 using CalcPrimesMultiThread;
 using CalcPrimesMultiThread.Prime.Task;
@@ -19,10 +17,8 @@ namespace Frontend
 
         internal static void Start(object obj)
         {
-            //TODO change out folder in UI
             // INFO: Don't forget to set the working directory to the "out" folder in the run-config!"
             var token = (CancellationToken) obj;
-            Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US");
             try
             {
                 CustomConsole.WriteLine("Starting...");
@@ -39,8 +35,12 @@ namespace Frontend
                 {
                     if (MaxN.HasValue && FileHelper.FindLastPrime() <= max) return;
                     if (MaxN.HasValue && max <= MaxSieveValue) TaskMaster.StartSieve(max, token);
-                    else if (Task) TaskMaster.Start(token);
-                    else ThreadMaster.Start(ThreadCount ?? 0);
+                    else
+                    {
+                        if (FileHelper.FindLastPrime() <= MaxSieveValue) TaskMaster.StartSieve(MaxSieveValue, token);
+                        if (Task) TaskMaster.Start(token);
+                        else ThreadMaster.Start(ThreadCount ?? 0);
+                    }
                 }
             }
             finally

@@ -23,7 +23,7 @@ namespace CalcPrimesMultiThread.Prime.Task
             CustomConsole.ReplaceLine("Picking up, where we left off...");
             var lastPrime = FileHelper.FindLastPrime();
             CustomConsole.ReplaceLine($"Starting at {lastPrime}.");
-            
+
             System.Threading.Thread.Sleep(2000);
 
             CustomConsole.WriteLine("Starting calculation...");
@@ -31,16 +31,16 @@ namespace CalcPrimesMultiThread.Prime.Task
 
             var current = lastPrime;
             for (BigInteger i = 0;
-                current < Max && !(token?.IsCancellationRequested ?? false);
-                current = lastPrime + ++i * Step)
+                 current < Max && !(token?.IsCancellationRequested ?? false);
+                 current = lastPrime + ++i * Step)
             {
                 CustomConsole.ReplaceLine($"Calculating till {current + Step}...");
                 var bag = new ConcurrentBag<BigInteger>();
 
                 ParallelFor(current, current + Step, n =>
-                {
-                    if (StaticPrime.IsPrime(n)) bag.Add(n);
-                });
+                                                     {
+                                                         if (StaticPrime.IsPrime(n)) bag.Add(n);
+                                                     });
 
                 var list = bag.ToList();
                 list.Sort();

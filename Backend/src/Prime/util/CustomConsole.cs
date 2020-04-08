@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 
 namespace CalcPrimesMultiThread.Prime.util
 {
@@ -15,10 +14,20 @@ namespace CalcPrimesMultiThread.Prime.util
             Console.SetOut(ConsoleOutput = new StringWriter());
         }
 
-        public static string Output() => ConsoleOutput.GetStringBuilder().ToString();
-        public static void Clear() => ConsoleOutput.GetStringBuilder().Clear();
+        public static string Output()
+        {
+            return ConsoleOutput.GetStringBuilder().ToString();
+        }
 
-        public static void WriteLine(string input) => Console.WriteLine(input);
+        public static void Clear()
+        {
+            ConsoleOutput.GetStringBuilder().Clear();
+        }
+
+        public static void WriteLine(string input)
+        {
+            Console.WriteLine(input);
+        }
 
         public static void ReplaceLine(string input)
         {
@@ -29,12 +38,16 @@ namespace CalcPrimesMultiThread.Prime.util
             sb.Remove(index, Math.Min(sb.Length - index, Environment.NewLine.Length));
 
             index = sb.ToString().LastIndexOf(Environment.NewLine, StringComparison.Ordinal) >= 0
-                        ? sb.ToString().LastIndexOf(Environment.NewLine, StringComparison.Ordinal) + Environment.NewLine.Length
+                        ? sb.ToString().LastIndexOf(Environment.NewLine, StringComparison.Ordinal) +
+                          Environment.NewLine.Length
                         : 0;
             sb.Remove(index, sb.Length - index);
             WriteLine(input);
         }
 
-        public static void NewLine() => Console.WriteLine();
+        public static void NewLine()
+        {
+            Console.WriteLine();
+        }
     }
 }

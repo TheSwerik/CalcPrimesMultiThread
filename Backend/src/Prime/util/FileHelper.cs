@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Numerics;
-using System.Threading;
 
 namespace CalcPrimesMultiThread
 {
@@ -20,8 +18,10 @@ namespace CalcPrimesMultiThread
 
         public static BigInteger FindLastPrime()
         {
+            if (!File.Exists(FullFileName)) return 0;
             while (File.Exists(FullFileName)) _fileNumber++;
             _fileNumber--;
+
             var result = BigInteger.Parse(File.ReadLines(FullFileName).Last());
             _stream ??= new FileStream(FullFileName, FileMode.Append);
             _writer ??= new StreamWriter(_stream);

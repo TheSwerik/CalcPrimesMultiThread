@@ -62,7 +62,8 @@
                 Margin="10" Visibility="Hidden" Click="CancelButton_OnClick" IsCancel="True" />
 
         <Border Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="4" Background="#D1D1D1" Margin="10" CornerRadius="3">
-            <TextBlock FontSize="15" Background="#F2F2F2" Height="200" Margin="3" x:Name="ConsoleTextBlock" FontFamily="monospace"/>
+            <TextBlock FontSize="15" Background="#F2F2F2" Height="200" Margin="3" x:Name="ConsoleTextBlock"
+                       FontFamily="monospace" />
         </Border>
     </Grid>
 </Window>
