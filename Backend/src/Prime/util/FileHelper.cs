@@ -46,6 +46,7 @@ namespace CalcPrimesMultiThread
 
         public static void Restart()
         {
+            Dispose();
             _fileNumber = 0;
             while (File.Exists(FullFileName))
             {
