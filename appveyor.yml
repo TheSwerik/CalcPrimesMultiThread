@@ -31,7 +31,7 @@ deploy:
     auth_token: # encrypted token:
       secure: HESVuhwKdUbPpbBsQrWslB7GYNy5r03/MN/enpu7UWbY886bOE+EpbEFwAVMrtLO
     artifact: CalcPrimesMultiThread
-    draft: true
+    draft: false
     prerelease: false
     force_update: false
     on:
