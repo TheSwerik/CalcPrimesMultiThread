@@ -4,5 +4,4 @@ mono: none
 dotnet: 3.1.201
 script:
 #  - dotnet restore
-  - msbuild /p:Configuration=Release solution-name.sln
-  - mono ./packages/xunit.runners.*/tools/xunit.console.clr4.exe ./MyProject.Tests/bin/Release/MyProject.Tests.dll
+  - msbuild /p:Configuration=Release CalcPrimesMultiThread.sln
