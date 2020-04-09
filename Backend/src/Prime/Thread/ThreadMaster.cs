@@ -37,6 +37,11 @@ namespace CalcPrimesMultiThread.Prime.Thread
             CustomConsole.WriteLine("Picking up, where we left off...");
             watch.Start();
             var lastPrime = FileHelper.FindLastPrime();
+            if (lastPrime >= Max - 100)
+            {
+                CustomConsole.ReplaceLine($"Already found {lastPrime}.");
+                return;
+            }
             CustomConsole.ReplaceLine($"Starting at {lastPrime}." + Environment.NewLine);
 
             while (lastPrime <= Max && !(token?.IsCancellationRequested ?? false))
