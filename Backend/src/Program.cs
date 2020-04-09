@@ -42,7 +42,7 @@ namespace CalcPrimesMultiThread
                     Console.WriteLine("How Many Threads do you want to use?");
                     input = Console.ReadLine();
                     var threadCount = string.IsNullOrEmpty(input) ? -1 : int.Parse(input);
-                    ThreadMaster.Start(threadCount);
+                    ThreadMaster.Start(threadCount, null);
                 }
                 else
                 {
@@ -53,7 +53,7 @@ namespace CalcPrimesMultiThread
                         Console.WriteLine("How Many Threads do you want to use?");
                         input = Console.ReadLine();
                         var threadCount = string.IsNullOrEmpty(input) ? -1 : int.Parse(input);
-                        ThreadMaster.Start(threadCount);
+                        ThreadMaster.Start(threadCount, null);
                     }
                 }
             }
