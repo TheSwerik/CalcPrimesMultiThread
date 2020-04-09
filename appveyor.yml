@@ -2,10 +2,6 @@
 
 configuration: Release
 
-environment:
-  token:
-    secure: HESVuhwKdUbPpbBsQrWslB7GYNy5r03/MN/enpu7UWbY886bOE+EpbEFwAVMrtLO
-
 before_build:
   - ps: nuget restore
 
@@ -33,7 +29,7 @@ after_build:
 deploy:
   - provider: GitHub
     auth_token: # encrypted token:
-      secure: token
+      secure: HESVuhwKdUbPpbBsQrWslB7GYNy5r03/MN/enpu7UWbY886bOE+EpbEFwAVMrtLO
     artifact: CalcPrimesMultiThread
     draft: true
     prerelease: false
