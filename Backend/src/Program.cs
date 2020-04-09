@@ -37,8 +37,11 @@ namespace CalcPrimesMultiThread
                 if (shouldOverride)
                 {
                     TaskMaster.StartSieve(max <= MaxSieveValue ? max : MaxSieveValue, null);
-                    if (Task && max > MaxSieveValue) TaskMaster.Start(null);
-                    if (Task) return;
+                    if (Task)
+                    {
+                        if (max > MaxSieveValue) TaskMaster.Start(null);
+                        return;
+                    }
                     Console.WriteLine("How Many Threads do you want to use?");
                     input = Console.ReadLine();
                     var threadCount = string.IsNullOrEmpty(input) ? -1 : int.Parse(input);
