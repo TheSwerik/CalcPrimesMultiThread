@@ -23,7 +23,7 @@ DisableProgramGroupPage=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 ;PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=dialog
-OutputBaseFilename=Calculate Primes Multithreaded
+OutputBaseFilename=CalculatePrimesMultithreaded
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
@@ -37,7 +37,7 @@ Name: "german"; MessagesFile: "compiler:Languages\German.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "Frontend\bin\Release\netcoreapp3.1\*.dll"; DestDir: "{app}/lib"; Flags: ignoreversion  
+Source: "Frontend\bin\Release\netcoreapp3.1\*.dll"; DestDir: "{app}"; Flags: ignoreversion  
 Source: "Frontend\bin\Release\netcoreapp3.1\Frontend.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "Frontend\bin\Release\netcoreapp3.1\Frontend.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
