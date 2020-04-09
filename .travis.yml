@@ -7,7 +7,7 @@
 #  - msbuild /p:Configuration=Release CalcPrimesMultiThread.sln
 language: csharp
 dist: trusty
-mono: none
+#mono: none
 dotnet: 2.0.0
 install:
   - curl -L -o nuget.exe https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
