@@ -2,12 +2,26 @@
 
 configuration: Release
 
+environment:
+  token:
+    secure: HESVuhwKdUbPpbBsQrWslB7GYNy5r03/MN/enpu7UWbY886bOE+EpbEFwAVMrtLO
+
 before_build:
   - ps: nuget restore
+
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: '{version}'
+  package_version: '{version}'
+  assembly_version: '{version}'
+  file_version: '{version}'
+  informational_version: '{version}'
 
 build:
   publish_nuget: true
   verbosity: minimal
+  
 
 artifacts:
   - path: /Output/CalculatePrimesMultithreaded.exe
@@ -19,7 +33,7 @@ after_build:
 deploy:
   - provider: GitHub
     auth_token: # encrypted token:
-      secure: /5GxE0EkKzEgnvnSjNgjT/RgIn6Gj9uK6Av/t2RnhRXaV308b6rCCgPoGvQCJhQHWuoVMdqqVsx/hZIpUm0JMBE3L4x+HJ3eeitXCYPU8mA=
+      secure: token
     artifact: CalcPrimesMultiThread
     draft: true
     prerelease: false
