@@ -36,22 +36,7 @@ Name: "german"; MessagesFile: "compiler:Languages\German.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "..\Frontend\bin\Release\netcoreapp3.1\Frontend.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\Frontend\bin\Release\netcoreapp3.1\Backend.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\Frontend\bin\Release\netcoreapp3.1\Backend.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\Frontend\bin\Release\netcoreapp3.1\Backend.pdb"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\Frontend\bin\Release\netcoreapp3.1\CalcPrimesMultiThreadUI.deps.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\Frontend\bin\Release\netcoreapp3.1\CalcPrimesMultiThreadUI.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\Frontend\bin\Release\netcoreapp3.1\CalcPrimesMultiThreadUI.runtimeconfig.dev.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\Frontend\bin\Release\netcoreapp3.1\CalcPrimesMultiThreadUI.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\Frontend\bin\Release\netcoreapp3.1\Frontend.deps.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\Frontend\bin\Release\netcoreapp3.1\Frontend.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\Frontend\bin\Release\netcoreapp3.1\Frontend.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\Frontend\bin\Release\netcoreapp3.1\Frontend.pdb"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\Frontend\bin\Release\netcoreapp3.1\Frontend.runtimeconfig.dev.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\Frontend\bin\Release\netcoreapp3.1\Frontend.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\Frontend\bin\Release\netcoreapp3.1\Microsoft.WindowsAPICodePack.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\Frontend\bin\Release\netcoreapp3.1\Microsoft.WindowsAPICodePack.Shell.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{src}\..\Frontend\bin\Release\netcoreapp3.1\*"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
