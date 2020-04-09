@@ -23,18 +23,13 @@ namespace CalcPrimesMultiThread
                 var max = BigInteger.Parse(Console.ReadLine() ?? "999999999999999999999999999999");
 
                 Console.WriteLine("Do you want to override any existing file?");
-                var shouldOverride = false;
                 var input = Console.ReadLine() ?? throw new InvalidInputException();
-                if (input.ToLowerInvariant().Contains("y") || input.ToLowerInvariant().Equals("true"))
-                {
-                    shouldOverride = true;
-                }
 
                 Console.WriteLine("\nStarting...");
 
                 ThreadMaster.Max = max;
                 TaskMaster.Max = max;
-                if (shouldOverride)
+                if (input.ToLowerInvariant().Contains("y") || input.ToLowerInvariant().Equals("true"))
                 {
                     TaskMaster.StartSieve(max <= MaxSieveValue ? max : MaxSieveValue, null);
                     if (Task)
