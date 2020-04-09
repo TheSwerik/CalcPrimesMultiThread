@@ -9,5 +9,5 @@ build:
   
 after_build:
 #  - cd 'C:\Program Files (x86)\Inno Setup 6'
-  - cd 'C:'
+  - cd 'C:\projects\'
   - ls
