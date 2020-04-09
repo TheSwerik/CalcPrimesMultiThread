@@ -49,7 +49,7 @@ namespace Frontend
                 return;
             }
 
-            if ((ThreadRadioThread.IsChecked ?? false) && (threadCount = int.Parse(MaxNumberBox.Text)) < 1)
+            if ((ThreadRadioThread.IsChecked ?? false) && (threadCount = int.Parse(ThreadBox.Text)) < 1)
             {
                 MessageBox.Show("Threadcount should not be below 1!", "ERROR", MessageBoxButton.OK);
                 return;
@@ -89,6 +89,13 @@ namespace Frontend
             CancelButton.Visibility = Visibility.Visible;
             ProgressBar.Visibility = Visibility.Visible;
             Finished = false;
+            Task.Run(() =>
+                     {
+                         while (!Finished) Thread.Sleep(1000);
+                         StartButton.Dispatcher.Invoke(new UpdateStartButtonCallback(ActivateStartButton));
+                         CancelButton.Dispatcher.Invoke(new UpdateCancelButtonCallback(DeactivateCancelButton));
+                         ProgressBar.Dispatcher.Invoke(new UpdateProgressBarCallback(DeactivateProgressBar));
+                     });
         }
 
         private void CancelButton_OnClick(object sender, RoutedEventArgs e)
@@ -97,16 +104,6 @@ namespace Frontend
             _cancelToken?.Cancel();
             _cancelToken?.Dispose();
             CancelButton.IsEnabled = false;
-            Task.Run(() =>
-                     {
-                         while (!Finished)
-                         {
-                         }
-
-                         StartButton.Dispatcher.Invoke(new UpdateStartButtonCallback(ActivateStartButton));
-                         CancelButton.Dispatcher.Invoke(new UpdateCancelButtonCallback(DeactivateCancelButton));
-                         ProgressBar.Dispatcher.Invoke(new UpdateProgressBarCallback(DeactivateProgressBar));
-                     });
         }
 
         private void CheckBox_OnChecked(object sender, RoutedEventArgs e)
@@ -133,10 +130,7 @@ namespace Frontend
             ThreadBox.Visibility = Visibility.Hidden;
         }
 
-        private static bool IsLegitNumber(string text)
-        {
-            return text != null && Regex.IsMatch(text, "[0-9]+");
-        }
+        private static bool IsLegitNumber(string text) => text != null && Regex.IsMatch(text, "[0-9]+");
 
         private void Button_OnClick(object sender, RoutedEventArgs e)
         {
@@ -157,9 +151,18 @@ namespace Frontend
             Environment.CurrentDirectory = OutputTextField.Text;
         }
 
-        private void Window_OnClosed(object? sender, EventArgs e)
+
+        private void Window_OnClosed(object? sender, EventArgs e) => Environment.Exit(Environment.ExitCode);
+
+
+        private void CheckForNumbers(object sender, TextCompositionEventArgs e) => e.Handled = !IsLegitNumber(e.Text);
+
+        private void ThreadBox_OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            Environment.Exit(Environment.ExitCode);
+            if (ThreadBox.Text.Equals("")) ThreadBox.Text = "1";
+            var input = int.Parse(ThreadBox.Text);
+            if (input > 64) ThreadBox.Text = "64";
+            else if (input < 1) ThreadBox.Text = "1";
         }
 
         // Helper Methods:
@@ -178,6 +181,7 @@ namespace Frontend
         private void UpdateConsoleText(string message)
         {
             ConsoleTextBlock.Text = "" + message;
+            ConsoleTextBlock.ScrollToEnd();
         }
 
         private void ActivateStartButton()
@@ -194,20 +198,6 @@ namespace Frontend
         {
             CancelButton.Visibility = Visibility.Hidden;
             CancelButton.IsEnabled = true;
-        }
-
-        private void ThreadBox_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            var regex = new Regex("[^0-9]+");
-            e.Handled = regex.IsMatch(e.Text);
-        }
-
-        private void ThreadBox_OnTextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (ThreadBox.Text.Equals("")) ThreadBox.Text = "1";
-            var input = int.Parse(ThreadBox.Text);
-            if (input > 64) ThreadBox.Text = "64";
-            else if (input < 1) ThreadBox.Text = "1";
         }
 
         private delegate void UpdateConsoleCallback(string message);

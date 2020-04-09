@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using System.Threading;
+using CalcPrimesMultiThread.Prime.util;
 
 namespace CalcPrimesMultiThread.Prime.Thread
 {
@@ -11,7 +12,7 @@ namespace CalcPrimesMultiThread.Prime.Thread
         private static int _threadCount = 1;
         public static BigInteger Max { get; set; }
 
-        public static void Start(int threadCount = -1)
+        public static void Start(int threadCount, CancellationToken? token)
         {
             _threadCount = threadCount < 1 ? Environment.ProcessorCount : threadCount;
             _threadCount = threadCount > 64 ? 64 : threadCount;
@@ -23,7 +24,7 @@ namespace CalcPrimesMultiThread.Prime.Thread
             var primes = new Prime[_threadCount];
 
             // config and start ThreadPool
-            Console.Write("Starting {0} Threads...", _threadCount);
+            CustomConsole.WriteLine($"Starting {_threadCount} Threads...");
 
             for (var i = 0; i < _threadCount; i++)
             {
@@ -31,19 +32,22 @@ namespace CalcPrimesMultiThread.Prime.Thread
                 primes[i] = new Prime((ManualResetEvent) events[i]);
             }
 
-            Console.Write("\r" + new string(' ', 50) + "\r");
-            Console.WriteLine("{0} Threads Started.", _threadCount);
+            CustomConsole.ReplaceLine($"{_threadCount} Threads Started.");
 
-            Console.Write("Picking up, where we left off...");
+            CustomConsole.WriteLine("Picking up, where we left off...");
             watch.Start();
             var lastPrime = FileHelper.FindLastPrime();
-            Console.Write("\r" + new string(' ', 50) + "\r");
-            Console.WriteLine("Starting at {0}.", lastPrime);
+            if (lastPrime >= Max - 100)
+            {
+                CustomConsole.ReplaceLine($"Already found {lastPrime}.");
+                return;
+            }
+            CustomConsole.ReplaceLine($"Starting at {lastPrime}." + Environment.NewLine);
 
-            while (lastPrime <= Max)
+            while (lastPrime <= Max && !(token?.IsCancellationRequested ?? false))
             {
                 if (watch.Elapsed.Milliseconds % 100_000 < 100)
-                    Console.Write("\rChecking from {0} to {1}...", lastPrime, lastPrime + threadCount * 2);
+                    CustomConsole.ReplaceLine($"Checking from {lastPrime} to {lastPrime + threadCount * 2}...");
 
                 for (var i = 0; i < _threadCount; i++)
                 {
@@ -59,7 +63,7 @@ namespace CalcPrimesMultiThread.Prime.Thread
             }
 
             watch.Stop();
-            Console.WriteLine("\rCalculation finished in {0}.", watch.Elapsed.ToString());
+            CustomConsole.WriteLine($"Calculation finished in {watch.Elapsed.ToString()}.");
         }
     }
 }

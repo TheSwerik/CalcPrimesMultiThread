@@ -23,26 +23,24 @@ namespace CalcPrimesMultiThread
                 var max = BigInteger.Parse(Console.ReadLine() ?? "999999999999999999999999999999");
 
                 Console.WriteLine("Do you want to override any existing file?");
-                var shouldOverride = false;
                 var input = Console.ReadLine() ?? throw new InvalidInputException();
-                if (input.ToLowerInvariant().Contains("y") || input.ToLowerInvariant().Equals("true"))
-                {
-                    shouldOverride = true;
-                }
 
                 Console.WriteLine("\nStarting...");
 
                 ThreadMaster.Max = max;
                 TaskMaster.Max = max;
-                if (shouldOverride)
+                if (input.ToLowerInvariant().Contains("y") || input.ToLowerInvariant().Equals("true"))
                 {
                     TaskMaster.StartSieve(max <= MaxSieveValue ? max : MaxSieveValue, null);
-                    if (Task && max > MaxSieveValue) TaskMaster.Start(null);
-                    if (Task) return;
+                    if (Task)
+                    {
+                        if (max > MaxSieveValue) TaskMaster.Start(null);
+                        return;
+                    }
                     Console.WriteLine("How Many Threads do you want to use?");
                     input = Console.ReadLine();
                     var threadCount = string.IsNullOrEmpty(input) ? -1 : int.Parse(input);
-                    ThreadMaster.Start(threadCount);
+                    ThreadMaster.Start(threadCount, null);
                 }
                 else
                 {
@@ -53,7 +51,7 @@ namespace CalcPrimesMultiThread
                         Console.WriteLine("How Many Threads do you want to use?");
                         input = Console.ReadLine();
                         var threadCount = string.IsNullOrEmpty(input) ? -1 : int.Parse(input);
-                        ThreadMaster.Start(threadCount);
+                        ThreadMaster.Start(threadCount, null);
                     }
                 }
             }
