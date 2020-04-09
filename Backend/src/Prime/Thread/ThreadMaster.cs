@@ -12,7 +12,7 @@ namespace CalcPrimesMultiThread.Prime.Thread
         private static int _threadCount = 1;
         public static BigInteger Max { get; set; }
 
-        public static void Start(int threadCount = -1)
+        public static void Start(int threadCount, CancellationToken? token)
         {
             _threadCount = threadCount < 1 ? Environment.ProcessorCount : threadCount;
             _threadCount = threadCount > 64 ? 64 : threadCount;
@@ -39,7 +39,7 @@ namespace CalcPrimesMultiThread.Prime.Thread
             var lastPrime = FileHelper.FindLastPrime();
             CustomConsole.ReplaceLine($"Starting at {lastPrime}." + Environment.NewLine);
 
-            while (lastPrime <= Max)
+            while (lastPrime <= Max && !(token?.IsCancellationRequested ?? false))
             {
                 if (watch.Elapsed.Milliseconds % 100_000 < 100)
                     CustomConsole.ReplaceLine($"Checking from {lastPrime} to {lastPrime + threadCount * 2}...");

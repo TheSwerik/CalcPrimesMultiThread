@@ -26,7 +26,7 @@ namespace Frontend
                 ThreadMaster.Max = TaskMaster.Max = max;
                 if (ShouldOverride) TaskMaster.StartSieve(max <= MaxSieveValue ? max : MaxSieveValue, token);
                 if (Task) TaskMaster.Start(token);
-                else ThreadMaster.Start(ThreadCount ?? 0);
+                else ThreadMaster.Start(ThreadCount ?? 0, token);
             }
             finally
             {
