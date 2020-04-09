@@ -11,5 +11,5 @@ after_build:
 #  - cd 'C:\Program Files (x86)\Inno Setup 6'
   - cd ..
   - cd ..
-  - cd 'Program Files (x86)'
+  - cd '\Program Files (x86)\'
   - ls
