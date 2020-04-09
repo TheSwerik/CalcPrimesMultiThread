@@ -38,6 +38,7 @@ namespace CalcPrimesMultiThread.Prime.Task
                  i <= n && !(token?.IsCancellationRequested ?? false);
                  i += 2)
                 if (!sieve[i]) primes.Add(i);
+            
             return primes;
         }
     }
