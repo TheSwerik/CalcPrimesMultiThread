@@ -8,6 +8,6 @@ build:
   publish_nuget: true
   
 after_build:
-  - compil32 /cc
+#  - compil32 /cc
   - iscc --help
   - echo test
