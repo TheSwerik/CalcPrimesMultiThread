@@ -1,0 +1,2 @@
+& "C:\Program Files (x86)\Inno Setup 6\iscc.exe" "Deployment\Inno Config.iss"
+& "C:\Users\Erik\AppData\Local\Programs\Inno Setup 6\iscc.exe" "\Deployment\Inno Config.iss"

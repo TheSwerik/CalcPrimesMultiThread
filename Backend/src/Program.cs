@@ -15,8 +15,8 @@ namespace CalcPrimesMultiThread
         private static void Main()
         {
             // INFO: Don't forget to set the working directory to the "out" folder in the run-config!"
+            // Info: DONT USE THIS FILE, USE THE FRONTEND
             Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US");
-
             try
             {
                 Console.WriteLine("Until what number do you want to calculate?");
@@ -25,15 +25,17 @@ namespace CalcPrimesMultiThread
                 Console.WriteLine("Do you want to override any existing file?");
                 var shouldOverride = false;
                 var input = Console.ReadLine() ?? throw new InvalidInputException();
-                if (input.ToLowerInvariant().Contains("y")) shouldOverride = true;
-                else if (input.ToLowerInvariant().Equals("true")) shouldOverride = true;
+                if (input.ToLowerInvariant().Contains("y") || input.ToLowerInvariant().Equals("true"))
+                {
+                    shouldOverride = true;
+                }
 
                 Console.WriteLine("\nStarting...");
 
+                ThreadMaster.Max = max;
+                TaskMaster.Max = max;
                 if (shouldOverride)
                 {
-                    ThreadMaster.Max = max;
-                    TaskMaster.Max = max;
                     TaskMaster.StartSieve(max <= MaxSieveValue ? max : MaxSieveValue, null);
                     if (Task && max > MaxSieveValue) TaskMaster.Start(null);
                     if (Task) return;
@@ -44,16 +46,8 @@ namespace CalcPrimesMultiThread
                 }
                 else
                 {
-                    ThreadMaster.Max = max;
-                    TaskMaster.Max = max;
-                    if (max <= MaxSieveValue)
-                    {
-                        TaskMaster.StartSieve(max, null);
-                    }
-                    else if (Task)
-                    {
-                        TaskMaster.Start(null);
-                    }
+                    if (max <= MaxSieveValue) TaskMaster.StartSieve(max, null);
+                    else if (Task) TaskMaster.Start(null);
                     else
                     {
                         Console.WriteLine("How Many Threads do you want to use?");

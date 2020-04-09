@@ -24,7 +24,7 @@ namespace CalcPrimesMultiThread.Prime.Thread
         // wrapper-method for threadpool:
         public void CheckNPrime(object threadContext)
         {
-            if (N % 2 == 0)
+            if ((N & 1) == 0)
             {
                 IsPrime = false;
                 _doneEvent.Set();
@@ -32,7 +32,7 @@ namespace CalcPrimesMultiThread.Prime.Thread
             }
 
             var root = Math.Sqrt((long) N);
-            for (var i = 3; i < root; i += 2)
+            for (var i = 3; i <= root; i += 2)
             {
                 if (N % i != 0) continue;
                 IsPrime = false;

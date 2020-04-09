@@ -30,7 +30,7 @@ namespace Frontend
                 {
                     TaskMaster.StartSieve(max <= MaxSieveValue ? max : MaxSieveValue, token);
                     if (Task && max > MaxSieveValue) TaskMaster.Start(token);
-                    if (!Task) ThreadMaster.Start(ThreadCount ?? 0);
+                    else if (!Task) ThreadMaster.Start(ThreadCount ?? 0);
                 }
                 else
                 {
