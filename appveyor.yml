@@ -6,3 +6,8 @@ before_build:
 build: 
   verbosity: minimal
   publish_nuget: true
+  
+after_build:
+  - compil32 /cc
+  - iscc --help
+  - echo test
