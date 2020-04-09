@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using CalcPrimesMultiThread.Prime.util;
 using Microsoft.WindowsAPICodePack.Dialogs;
 
@@ -193,6 +194,20 @@ namespace Frontend
         {
             CancelButton.Visibility = Visibility.Hidden;
             CancelButton.IsEnabled = true;
+        }
+
+        private void ThreadBox_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            var regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+
+        private void ThreadBox_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (ThreadBox.Text.Equals("")) ThreadBox.Text = "1";
+            var input = int.Parse(ThreadBox.Text);
+            if (input > 64) ThreadBox.Text = "64";
+            else if (input < 1) ThreadBox.Text = "1";
         }
 
         private delegate void UpdateConsoleCallback(string message);
