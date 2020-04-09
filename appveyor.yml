@@ -1,1 +1,28 @@
-﻿#TODO pull from AppVeyor
+﻿version: 1.0.3.{build}
+
+configuration: Release
+
+before_build:
+  - ps: nuget restore
+
+build:
+  publish_nuget: true
+  verbosity: minimal
+
+artifacts:
+  - path: /Output/CalculatePrimesMultithreaded.exe
+    name: CalcPrimesMultiThread
+
+after_build:
+  - ps: '& "C:\Program Files (x86)\Inno Setup 6\iscc.exe" "Deployment\Inno Config.iss"'
+    
+deploy:
+  - provider: GitHub
+    auth_token: # encrypted token:
+      secure: /5GxE0EkKzEgnvnSjNgjT/RgIn6Gj9uK6Av/t2RnhRXaV308b6rCCgPoGvQCJhQHWuoVMdqqVsx/hZIpUm0JMBE3L4x+HJ3eeitXCYPU8mA=
+    artifact: CalcPrimesMultiThread
+    draft: true
+    prerelease: false
+    force_update: false
+    on:
+      branch: master
