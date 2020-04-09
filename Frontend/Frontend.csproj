@@ -5,27 +5,35 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <UseWPF>true</UseWPF>
         <VersionPrefix>1.0.0</VersionPrefix>
+        <AssemblyName>Calculate Primes Multithreaded</AssemblyName>
+        <OutputPath>Bin\</OutputPath>
     </PropertyGroup>
 
     <ItemGroup>
-      <ApplicationDefinition Remove="App.xaml" />
-      <ApplicationDefinition Include="src\App.xaml">
-        <Generator>MSBuild:Compile</Generator>
-      </ApplicationDefinition>
+        <ApplicationDefinition Remove="App.xaml"/>
+        <ApplicationDefinition Include="src\App.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </ApplicationDefinition>
     </ItemGroup>
 
     <ItemGroup>
-      <Page Update="src\MainWindow.xaml">
-        <Generator>MSBuild:Compile</Generator>
-      </Page>
+        <Page Update="src\MainWindow.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </Page>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Backend\Backend.csproj" />
+        <ProjectReference Include="..\Backend\Backend.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="WindowsAPICodePack-Shell" Version="1.1.1" />
+        <PackageReference Include="WindowsAPICodePack-Shell" Version="1.1.1"/>
     </ItemGroup>
-
+    
+    <Target Name="Compile">
+        <CSC Sources="@(CSFile)" OutputAssembly="$(appname).exe">
+            <Output TaskParameter="OutputAssembly" ItemName="EXEFile"/>
+        </CSC>
+        <Message Text="The output file is @(EXEFile)"/>
+    </Target>
 </Project>
