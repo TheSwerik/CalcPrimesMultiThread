@@ -37,7 +37,9 @@ Name: "german"; MessagesFile: "compiler:Languages\German.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "Frontend\bin\Release\netcoreapp3.1\*"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Frontend\bin\Release\netcoreapp3.1\*.dll"; DestDir: "{app}/lib"; Flags: ignoreversion  
+Source: "Frontend\bin\Release\netcoreapp3.1\Frontend.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Frontend\bin\Release\netcoreapp3.1\Frontend.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
