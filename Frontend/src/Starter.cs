@@ -34,17 +34,16 @@ namespace Frontend
                 }
                 else
                 {
-                    if (MaxN.HasValue && FileHelper.FindLastPrime() <= max) return;
-                    if (MaxN.HasValue && max <= MaxSieveValue)
-                    {
-                        TaskMaster.StartSieve(max, token);
-                    }
-                    else
-                    {
-                        if (FileHelper.FindLastPrime() <= MaxSieveValue) TaskMaster.StartSieve(MaxSieveValue, token);
+                    // CustomConsole.WriteLine("bbbbbb");
+                    // if (MaxN.HasValue && FileHelper.FindLastPrime() <= max) return;
+                    // if (MaxN.HasValue && max <= MaxSieveValue) TaskMaster.StartSieve(max, token);
+                    // else
+                    // {
+                        // if (FileHelper.FindLastPrime() <= MaxSieveValue) TaskMaster.StartSieve(MaxSieveValue, token);
+                        // CustomConsole.WriteLine("assss" + Environment.NewLine);
                         if (Task) TaskMaster.Start(token);
                         else ThreadMaster.Start(ThreadCount ?? 0);
-                    }
+                    // }
                 }
             }
             finally

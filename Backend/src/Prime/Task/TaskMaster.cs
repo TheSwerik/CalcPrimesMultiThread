@@ -12,6 +12,7 @@ namespace CalcPrimesMultiThread.Prime.Task
 {
     public static class TaskMaster
     {
+        private const int MaxSieveValue = int.MaxValue - 57;
         private const long Step = 1_000_000;
         public static BigInteger Max { get; set; }
 
@@ -22,9 +23,22 @@ namespace CalcPrimesMultiThread.Prime.Task
 
             CustomConsole.ReplaceLine("Picking up, where we left off...");
             var lastPrime = FileHelper.FindLastPrime();
+            if (lastPrime >= Max - 100)
+            {
+                CustomConsole.ReplaceLine($"Already found {lastPrime}.");
+                return;
+            }
+
             CustomConsole.ReplaceLine($"Starting at {lastPrime}.");
 
-            System.Threading.Thread.Sleep(2000);
+            if (lastPrime < MaxSieveValue)
+            {
+                StartSieve(MaxSieveValue >= Max ? Max : MaxSieveValue, token);
+                lastPrime = FileHelper.FindLastPrime();
+                if (lastPrime >= Max - 100) return;
+            }
+
+            System.Threading.Thread.Sleep(1000);
 
             CustomConsole.WriteLine("Starting calculation...");
             watch.Start();

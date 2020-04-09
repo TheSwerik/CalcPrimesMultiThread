@@ -44,7 +44,8 @@
                   Unchecked="CheckBox_OnUnchecked" Margin="10" Content="Infinite" FontSize="15" />
         <TextBlock Grid.Column="3" Grid.Row="2" x:Name="MaxNumberLabel" FontSize="15" Text="Maximum Number:"
                    Margin="10" />
-        <TextBox Grid.Column="4" Grid.Row="2" x:Name="MaxNumberBox" Margin="10" />
+        <TextBox Grid.Column="4" Grid.Row="2" x:Name="MaxNumberBox" Margin="10" PreviewTextInput="CheckForNumbers"
+                 Text="10000000000" />
 
         <RadioButton Grid.Column="1" Grid.Row="3" x:Name="ThreadRadioThread" FontSize="15" Content="Thread" Margin="10"
                      Checked="ThreadRadioThread_OnChecked" />
@@ -52,8 +53,8 @@
                      Checked="ThreadRadioTask_OnChecked" />
         <TextBlock Grid.Column="3" Grid.Row="3" x:Name="ThreadLabel" FontSize="15" Text="Number of Threads:"
                    Margin="10" />
-        <TextBox Grid.Column="4" Grid.Row="3" x:Name="ThreadBox" PreviewTextInput="ThreadBox_OnPreviewTextInput"
-                 TextChanged="ThreadBox_OnTextChanged" Width="150" Margin="10" MaxLength="2" />
+        <TextBox Grid.Column="4" Grid.Row="3" x:Name="ThreadBox" PreviewTextInput="CheckForNumbers"
+                 TextChanged="ThreadBox_OnTextChanged" Width="150" Margin="10" MaxLength="2" Text="64" />
 
         <Button Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="4" FontSize="20" x:Name="StartButton" Content="Start"
                 Margin="10"
@@ -63,8 +64,10 @@
 
         <Border Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="4" Background="#D1D1D1" Margin="10 10 10 0"
                 CornerRadius="3">
-            <TextBlock FontSize="15" Background="#F2F2F2" Height="200" Margin="3" x:Name="ConsoleTextBlock"
-                       FontFamily="monospace" />
+            <!-- <ScrollViewer > -->
+                <TextBox FontSize="15" Background="#F2F2F2" Height="200" Margin="3" x:Name="ConsoleTextBlock" BorderThickness="0"
+                           FontFamily="monospace" ScrollViewer.VerticalScrollBarVisibility="Visible" IsReadOnly="True"/>
+            <!-- </ScrollViewer> -->
         </Border>
 
         <ProgressBar Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="4" Margin="11 0 11 11" IsIndeterminate="True"
