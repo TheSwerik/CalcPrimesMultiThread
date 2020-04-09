@@ -9,5 +9,5 @@ build:
   
 after_build:
 #  - compil32 /cc
-  - iscc --help
+#  - iscc --help
   - echo test
