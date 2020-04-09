@@ -5,7 +5,7 @@
 #define MyAppVersion "1.0.0"
 #define MyAppPublisher "Swerik"
 #define MyAppURL "https://github.com/TheSwerik/CalcPrimesMultiThread"
-#define MyAppExeName "Frontend.exe"
+#define MyAppExeName "CalculatePrimesMultithreaded.exe"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
@@ -38,8 +38,8 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 Source: "Frontend\bin\Release\netcoreapp3.1\*.dll"; DestDir: "{app}"; Flags: ignoreversion  
-Source: "Frontend\bin\Release\netcoreapp3.1\Frontend.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "Frontend\bin\Release\netcoreapp3.1\Frontend.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Frontend\bin\Release\netcoreapp3.1\CalculatePrimesMultithreaded.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Frontend\bin\Release\netcoreapp3.1\CalculatePrimesMultithreaded.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
