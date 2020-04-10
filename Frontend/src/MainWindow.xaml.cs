@@ -60,35 +60,24 @@ namespace Frontend
                 }
             }
 
+            Starter.ShouldOverride = false;
             if (OverrideCheckBox.IsChecked ?? false)
             {
                 if (MessageBox.Show("Are you sure that you want to override / delete all existing Files?", "WARNING",
                                     MessageBoxButton.YesNo) != MessageBoxResult.Yes ||
                     MessageBox.Show("Are you really sure?", "WARNING",
                                     MessageBoxButton.YesNo) != MessageBoxResult.Yes) return;
-
-                ConsoleTextBlock.Text = "";
-                CustomConsole.Clear();
-
-                _cancelToken = new CancellationTokenSource();
-                Starter.Task = !ThreadRadioThread.IsChecked ?? false;
                 Starter.ShouldOverride = true;
-                Starter.ThreadCount = threadCount;
-                Starter.MaxN = maxNumber;
-                ThreadPool.QueueUserWorkItem(Starter.Start, _cancelToken.Token);
             }
-            else
-            {
-                ConsoleTextBlock.Text = "";
-                CustomConsole.Clear();
 
-                _cancelToken = new CancellationTokenSource();
-                Starter.Task = !ThreadRadioThread.IsChecked ?? false;
-                Starter.ShouldOverride = false;
-                Starter.ThreadCount = threadCount;
-                Starter.MaxN = maxNumber;
-                ThreadPool.QueueUserWorkItem(Starter.Start, _cancelToken.Token);
-            }
+            ConsoleTextBlock.Text = "";
+            CustomConsole.Clear();
+
+            _cancelToken = new CancellationTokenSource();
+            Starter.Task = !ThreadRadioThread.IsChecked ?? false;
+            Starter.ThreadCount = threadCount;
+            Starter.MaxN = maxNumber;
+            ThreadPool.QueueUserWorkItem(Starter.Start, _cancelToken.Token);
 
             StartButton.Visibility = Visibility.Hidden;
             CancelButton.Visibility = Visibility.Visible;
