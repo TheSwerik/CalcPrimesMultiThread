@@ -1,23 +1,23 @@
-﻿version: $(version_number).{build}
+﻿environment:
+  my_version_number: 1.0.5
 
-#environment:
-#  version_number: 1.0.5
+version: $(my_version_number).{build}
 
 configuration: Release
 
 before_build:
-  - ps: $env:version_number
-#  - ps: Update-AppveyorBuild -Version "$env:version_number.$env:APPVEYOR_BUILD_NUMBER"
+  - ps: $env:my_version_number
+  #  - ps: Update-AppveyorBuild -Version "$env:version_number.$env:APPVEYOR_BUILD_NUMBER"
   - ps: nuget restore
 
 dotnet_csproj:
   patch: true
   file: '**\*.csproj'
-  version: '$(version_number)'
-  package_version: '$(version_number)'
-  assembly_version: '$(version_number)'
-  file_version: '$(version_number)'
-  informational_version: '$(version_number)'
+  version: '$(my_version_number)'
+  package_version: '$(my_version_number)'
+  assembly_version: '$(my_version_number)'
+  file_version: '$(my_version_number)'
+  informational_version: '$(my_version_number)'
 
 build:
   publish_nuget: true
@@ -29,12 +29,11 @@ artifacts:
     name: CalcPrimesMultiThread
 
 after_build:
-  - ps: $env:version_number
   - ps: '& "C:\Program Files (x86)\Inno Setup 6\iscc.exe" "Deployment\Inno Config.iss"'
 
 deploy:
   - provider: GitHub
-    release: $(version_number)
+    release: $(my_version_number)
     auth_token: # encrypted token:
       secure: HESVuhwKdUbPpbBsQrWslB7GYNy5r03/MN/enpu7UWbY886bOE+EpbEFwAVMrtLO
     artifact: CalcPrimesMultiThread
