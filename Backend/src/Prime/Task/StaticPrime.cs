@@ -9,8 +9,6 @@ namespace CalcPrimesMultiThread.Prime.Task
     {
         public static bool IsPrime(BigInteger n)
         {
-            if ((n & 1) == 0) return false;
-
             var root = Math.Sqrt((long) n);
             for (var i = 3; i <= root; i += 2)
             {
