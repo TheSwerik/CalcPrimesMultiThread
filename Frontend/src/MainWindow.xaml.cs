@@ -30,29 +30,34 @@ namespace Frontend
         {
             int? threadCount = null;
             BigInteger? maxNumber = null;
-            if ((!MaxNumberCheckBox.IsChecked ?? false) && !IsLegitNumber(MaxNumberBox.Text))
+            if (!MaxNumberCheckBox.IsChecked ?? false)
             {
-                MessageBox.Show("Maximum Number not Valid!", "ERROR", MessageBoxButton.OK);
-                return;
+                if (!IsLegitNumber(MaxNumberBox.Text))
+                {
+                    MessageBox.Show("Maximum Number not Valid!", "ERROR", MessageBoxButton.OK);
+                    return;
+                }
+
+                if ((maxNumber = BigInteger.Parse(MaxNumberBox.Text)) < BigInteger.One * 2)
+                {
+                    MessageBox.Show("Maximum Number should not be below 2!", "ERROR", MessageBoxButton.OK);
+                    return;
+                }
             }
 
-            if ((!MaxNumberCheckBox.IsChecked ?? false) &&
-                (maxNumber = BigInteger.Parse(MaxNumberBox.Text)) < BigInteger.One * 2)
+            if (ThreadRadioThread.IsChecked ?? false)
             {
-                MessageBox.Show("Maximum Number should not be below 2!", "ERROR", MessageBoxButton.OK);
-                return;
-            }
+                if (!IsLegitNumber(ThreadBox.Text))
+                {
+                    MessageBox.Show("Threadcount is not Valid!", "ERROR", MessageBoxButton.OK);
+                    return;
+                }
 
-            if ((ThreadRadioThread.IsChecked ?? false) && !IsLegitNumber(ThreadBox.Text))
-            {
-                MessageBox.Show("Threadcount is not Valid!", "ERROR", MessageBoxButton.OK);
-                return;
-            }
-
-            if ((ThreadRadioThread.IsChecked ?? false) && (threadCount = int.Parse(ThreadBox.Text)) < 1)
-            {
-                MessageBox.Show("Threadcount should not be below 1!", "ERROR", MessageBoxButton.OK);
-                return;
+                if ((threadCount = int.Parse(ThreadBox.Text)) < 1)
+                {
+                    MessageBox.Show("Threadcount should not be below 1!", "ERROR", MessageBoxButton.OK);
+                    return;
+                }
             }
 
             if (OverrideCheckBox.IsChecked ?? false)
