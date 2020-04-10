@@ -6,8 +6,6 @@ version: $(my_version_number).{build}
 configuration: Release
 
 before_build:
-  - ps: $env:my_version_number
-  #  - ps: Update-AppveyorBuild -Version "$env:version_number.$env:APPVEYOR_BUILD_NUMBER"
   - ps: nuget restore
 
 dotnet_csproj:
