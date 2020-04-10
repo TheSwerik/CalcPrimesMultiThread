@@ -1,5 +1,5 @@
 ﻿environment:
-  version_number: 1.0.4
+  version_number: 1.0.5
 version: $(version_number).{build}
 
 configuration: Release
