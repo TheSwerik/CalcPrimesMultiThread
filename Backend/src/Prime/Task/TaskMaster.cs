@@ -13,7 +13,7 @@ namespace CalcPrimesMultiThread.Prime.Task
     public static class TaskMaster
     {
         private const int MaxSieveValue = int.MaxValue - 57;
-        private const long Step = 1_000_000;
+        private const long Step = 2_000_000;
         public static BigInteger Max { get; set; }
 
         public static void Start(CancellationToken? token)
@@ -71,7 +71,7 @@ namespace CalcPrimesMultiThread.Prime.Task
 
         private static IEnumerable<BigInteger> Range(BigInteger fromInclusive, BigInteger toExclusive)
         {
-            for (var i = fromInclusive; i < toExclusive; i++) yield return i;
+            for (var i = fromInclusive; i < toExclusive; i+=2) yield return i;
         }
 
         private static void ParallelFor(BigInteger fromInclusive, BigInteger toExclusive, Action<BigInteger> body)
