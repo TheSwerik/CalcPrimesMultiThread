@@ -1,6 +1,6 @@
 ﻿environment:
   version_number: 1.0.4
-version: version_number.{build}
+version: {version_number}.{build}
 
 configuration: Release
 
@@ -30,7 +30,7 @@ after_build:
     
 deploy:
   - provider: GitHub
-    release: version_number
+    release: {version_number}
     auth_token: # encrypted token:
       secure: HESVuhwKdUbPpbBsQrWslB7GYNy5r03/MN/enpu7UWbY886bOE+EpbEFwAVMrtLO
     artifact: CalcPrimesMultiThread
