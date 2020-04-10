@@ -1,10 +1,11 @@
 ﻿environment:
   version_number: 1.0.4
-version: {version_number}.{build}
+version: version_number.{build}
 
 configuration: Release
 
 before_build:
+  - ps: $env:version_number
   - ps: nuget restore
 
 dotnet_csproj:
