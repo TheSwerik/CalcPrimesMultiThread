@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Linq;
 using System.Numerics;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -155,8 +156,7 @@ namespace Frontend
         {
             if (ThreadBox.Text.Equals("")) ThreadBox.Text = "1";
             var input = int.Parse(ThreadBox.Text);
-            if (input > 64) ThreadBox.Text = "64";
-            else if (input < 1) ThreadBox.Text = "1";
+            ThreadBox.Text = "" + Math.Max(1, Math.Min(input, 64));
         }
 
         // Helper Methods:

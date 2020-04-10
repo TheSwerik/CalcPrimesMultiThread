@@ -24,7 +24,7 @@ namespace Frontend
                 CustomConsole.WriteLine("Starting..." + Environment.NewLine);
                 var max = MaxN ?? BigInteger.Parse("999999999999999999999999999999");
                 ThreadMaster.Max = TaskMaster.Max = max;
-                if (ShouldOverride) TaskMaster.StartSieve(max <= MaxSieveValue ? max : MaxSieveValue, token);
+                if (ShouldOverride) TaskMaster.StartSieve(BigInteger.Min(max, MaxSieveValue), token);
                 if (Task) TaskMaster.Start(token);
                 else ThreadMaster.Start(ThreadCount ?? 0, token);
             }
