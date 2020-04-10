@@ -1,5 +1,5 @@
 ﻿environment:
-  version_number: 1.0.4.2.2.2.2.2.2.sdasdasdasdasdasasd
+  version_number: 1.0.5
 version: $(version_number).{build}
 
 configuration: Release
@@ -28,6 +28,7 @@ artifacts:
     name: CalcPrimesMultiThread
 
 after_build:
+  - ps: $env:version_number
   - ps: '& "C:\Program Files (x86)\Inno Setup 6\iscc.exe" "Deployment\Inno Config.iss"'
 
 deploy:
