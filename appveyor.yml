@@ -5,6 +5,7 @@ version: $(version_number).{build}
 configuration: Release
 
 before_build:
+  - ps: $env:version_number
   - ps: nuget restore
 
 dotnet_csproj:
