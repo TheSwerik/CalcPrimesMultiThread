@@ -13,7 +13,7 @@ namespace CalcPrimesMultiThread.Prime.Task
     public static class TaskMaster
     {
         private const int MaxSieveValue = int.MaxValue - 57;
-        private const long Step = 2_000_000;
+        private const long Step = 1_000_000;
         public static BigInteger Max { get; set; }
 
         public static void Start(CancellationToken? token)

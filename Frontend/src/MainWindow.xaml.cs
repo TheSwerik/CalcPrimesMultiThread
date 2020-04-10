@@ -63,8 +63,8 @@ namespace Frontend
             if (OverrideCheckBox.IsChecked ?? false)
             {
                 if (MessageBox.Show("Are you sure that you want to override / delete all existing Files?", "WARNING",
-                                    MessageBoxButton.YesNo) != MessageBoxResult.Yes) return;
-                if (MessageBox.Show("Are you really sure?", "WARNING",
+                                    MessageBoxButton.YesNo) != MessageBoxResult.Yes ||
+                    MessageBox.Show("Are you really sure?", "WARNING",
                                     MessageBoxButton.YesNo) != MessageBoxResult.Yes) return;
 
                 ConsoleTextBlock.Text = "";
