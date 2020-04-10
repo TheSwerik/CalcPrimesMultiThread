@@ -6,6 +6,7 @@ configuration: Release
 
 before_build:
   - ps: $env:version_number
+  - ps: Update-AppveyorBuild -Version "$env:version_number.$env.APPVEYOR_BUILD_NUMBER"
   - ps: nuget restore
 
 dotnet_csproj:
@@ -20,7 +21,7 @@ dotnet_csproj:
 build:
   publish_nuget: true
   verbosity: minimal
-  
+
 
 artifacts:
   - path: /Output/CalculatePrimesMultithreaded.exe
@@ -28,7 +29,7 @@ artifacts:
 
 after_build:
   - ps: '& "C:\Program Files (x86)\Inno Setup 6\iscc.exe" "Deployment\Inno Config.iss"'
-    
+
 deploy:
   - provider: GitHub
     release: $(version_number)
