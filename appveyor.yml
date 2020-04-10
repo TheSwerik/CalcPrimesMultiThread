@@ -1,5 +1,5 @@
 ﻿environment:
-  my_version_number: 1.0.5
+  my_version_number: 1.0.6
 
 version: $(my_version_number).{build}
 
