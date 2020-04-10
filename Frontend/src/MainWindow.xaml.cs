@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Linq;
 using System.Numerics;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -30,60 +31,54 @@ namespace Frontend
         {
             int? threadCount = null;
             BigInteger? maxNumber = null;
-            if ((!MaxNumberCheckBox.IsChecked ?? false) && !IsLegitNumber(MaxNumberBox.Text))
+            if (!MaxNumberCheckBox.IsChecked ?? false)
             {
-                MessageBox.Show("Maximum Number not Valid!", "ERROR", MessageBoxButton.OK);
-                return;
+                if (!IsLegitNumber(MaxNumberBox.Text))
+                {
+                    MessageBox.Show("Maximum Number not Valid!", "ERROR", MessageBoxButton.OK);
+                    return;
+                }
+
+                if ((maxNumber = BigInteger.Parse(MaxNumberBox.Text)) < BigInteger.One * 2)
+                {
+                    MessageBox.Show("Maximum Number should not be below 2!", "ERROR", MessageBoxButton.OK);
+                    return;
+                }
             }
 
-            if ((!MaxNumberCheckBox.IsChecked ?? false) &&
-                (maxNumber = BigInteger.Parse(MaxNumberBox.Text)) < BigInteger.One * 2)
+            if (ThreadRadioThread.IsChecked ?? false)
             {
-                MessageBox.Show("Maximum Number should not be below 2!", "ERROR", MessageBoxButton.OK);
-                return;
+                if (!IsLegitNumber(ThreadBox.Text))
+                {
+                    MessageBox.Show("Threadcount is not Valid!", "ERROR", MessageBoxButton.OK);
+                    return;
+                }
+
+                if ((threadCount = int.Parse(ThreadBox.Text)) < 1)
+                {
+                    MessageBox.Show("Threadcount should not be below 1!", "ERROR", MessageBoxButton.OK);
+                    return;
+                }
             }
 
-            if ((ThreadRadioThread.IsChecked ?? false) && !IsLegitNumber(ThreadBox.Text))
-            {
-                MessageBox.Show("Threadcount is not Valid!", "ERROR", MessageBoxButton.OK);
-                return;
-            }
-
-            if ((ThreadRadioThread.IsChecked ?? false) && (threadCount = int.Parse(ThreadBox.Text)) < 1)
-            {
-                MessageBox.Show("Threadcount should not be below 1!", "ERROR", MessageBoxButton.OK);
-                return;
-            }
-
+            Starter.ShouldOverride = false;
             if (OverrideCheckBox.IsChecked ?? false)
             {
                 if (MessageBox.Show("Are you sure that you want to override / delete all existing Files?", "WARNING",
+                                    MessageBoxButton.YesNo) != MessageBoxResult.Yes ||
+                    MessageBox.Show("Are you really sure?", "WARNING",
                                     MessageBoxButton.YesNo) != MessageBoxResult.Yes) return;
-                if (MessageBox.Show("Are you really sure?", "WARNING",
-                                    MessageBoxButton.YesNo) != MessageBoxResult.Yes) return;
-
-                ConsoleTextBlock.Text = "";
-                CustomConsole.Clear();
-
-                _cancelToken = new CancellationTokenSource();
-                Starter.Task = !ThreadRadioThread.IsChecked ?? false;
                 Starter.ShouldOverride = true;
-                Starter.ThreadCount = threadCount;
-                Starter.MaxN = maxNumber;
-                ThreadPool.QueueUserWorkItem(Starter.Start, _cancelToken.Token);
             }
-            else
-            {
-                ConsoleTextBlock.Text = "";
-                CustomConsole.Clear();
 
-                _cancelToken = new CancellationTokenSource();
-                Starter.Task = !ThreadRadioThread.IsChecked ?? false;
-                Starter.ShouldOverride = false;
-                Starter.ThreadCount = threadCount;
-                Starter.MaxN = maxNumber;
-                ThreadPool.QueueUserWorkItem(Starter.Start, _cancelToken.Token);
-            }
+            ConsoleTextBlock.Text = "";
+            CustomConsole.Clear();
+
+            _cancelToken = new CancellationTokenSource();
+            Starter.Task = !ThreadRadioThread.IsChecked ?? false;
+            Starter.ThreadCount = threadCount;
+            Starter.MaxN = maxNumber;
+            ThreadPool.QueueUserWorkItem(Starter.Start, _cancelToken.Token);
 
             StartButton.Visibility = Visibility.Hidden;
             CancelButton.Visibility = Visibility.Visible;
@@ -161,8 +156,7 @@ namespace Frontend
         {
             if (ThreadBox.Text.Equals("")) ThreadBox.Text = "1";
             var input = int.Parse(ThreadBox.Text);
-            if (input > 64) ThreadBox.Text = "64";
-            else if (input < 1) ThreadBox.Text = "1";
+            ThreadBox.Text = "" + Math.Max(1, Math.Min(input, 64));
         }
 
         // Helper Methods:

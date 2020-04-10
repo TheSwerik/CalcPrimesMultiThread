@@ -71,7 +71,7 @@ namespace CalcPrimesMultiThread.Prime.Task
 
         private static IEnumerable<BigInteger> Range(BigInteger fromInclusive, BigInteger toExclusive)
         {
-            for (var i = fromInclusive; i < toExclusive; i++) yield return i;
+            for (var i = fromInclusive; i < toExclusive; i+=2) yield return i;
         }
 
         private static void ParallelFor(BigInteger fromInclusive, BigInteger toExclusive, Action<BigInteger> body)

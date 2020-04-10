@@ -15,7 +15,7 @@ namespace CalcPrimesMultiThread.Prime.Thread
         public static void Start(int threadCount, CancellationToken? token)
         {
             _threadCount = threadCount < 1 ? Environment.ProcessorCount : threadCount;
-            _threadCount = threadCount > 64 ? 64 : threadCount;
+            _threadCount = Math.Min(threadCount, 64);
 
             var watch = new Stopwatch();
 
@@ -42,6 +42,7 @@ namespace CalcPrimesMultiThread.Prime.Thread
                 CustomConsole.ReplaceLine($"Already found {lastPrime}.");
                 return;
             }
+
             CustomConsole.ReplaceLine($"Starting at {lastPrime}." + Environment.NewLine);
 
             while (lastPrime <= Max && !(token?.IsCancellationRequested ?? false))
