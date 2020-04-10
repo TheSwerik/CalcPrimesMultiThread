@@ -1,7 +1,7 @@
 ﻿version: $(version_number).{build}
 
-environment:
-  version_number: 1.0.5
+#environment:
+#  version_number: 1.0.5
 
 configuration: Release
 
