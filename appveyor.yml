@@ -1,6 +1,6 @@
 ﻿environment:
   version_number: 1.0.4
-version: version_number.{build}
+version: $env:version_number.{build}
 
 configuration: Release
 
