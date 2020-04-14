@@ -37,9 +37,9 @@ Name: "german"; MessagesFile: "compiler:Languages\German.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "Frontend\bin\Release\netcoreapp3.1\*.dll"; DestDir: "{app}"; Flags: ignoreversion  
-Source: "Frontend\bin\Release\netcoreapp3.1\CalculatePrimesMultithreaded.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "Frontend\bin\Release\netcoreapp3.1\CalculatePrimesMultithreaded.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Frontend\bin\Release\netcoreapp3.1\*.dll"; DestDir: "{app}\bin"; Flags: ignoreversion  
+Source: "Frontend\bin\Release\netcoreapp3.1\CalculatePrimesMultithreaded.exe"; DestDir: "{app}\bin"; Flags: ignoreversion
+Source: "Frontend\bin\Release\netcoreapp3.1\CalculatePrimesMultithreaded.runtimeconfig.json"; DestDir: "{app}\bin"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
@@ -47,5 +47,5 @@ Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
 [Run]
-Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\bin\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
