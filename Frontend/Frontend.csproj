@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ApplicationDefinition Remove="App.xaml"/>
+        <ApplicationDefinition Remove="App.xaml" />
         <ApplicationDefinition Include="src\App.xaml">
             <Generator>MSBuild:Compile</Generator>
         </ApplicationDefinition>
@@ -22,17 +22,17 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Backend\Backend.csproj"/>
+        <ProjectReference Include="..\Backend\Backend.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="WindowsAPICodePack-Shell" Version="1.1.1"/>
+        <PackageReference Include="Microsoft-WindowsAPICodePack-Shell" Version="1.1.4" />
     </ItemGroup>
     
     <Target Name="Compile">
         <CSC Sources="@(CSFile)" OutputAssembly="$(appname).exe">
-            <Output TaskParameter="OutputAssembly" ItemName="EXEFile"/>
+            <Output TaskParameter="OutputAssembly" ItemName="EXEFile" />
         </CSC>
-        <Message Text="The output file is @(EXEFile)"/>
+        <Message Text="The output file is @(EXEFile)" />
     </Target>
 </Project>
