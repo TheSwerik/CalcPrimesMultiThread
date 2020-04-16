@@ -18,7 +18,7 @@ dotnet_csproj:
   informational_version: '$(my_version_number)'
 
 build:
-  publish_nuget: true
+  #publish_nuget: true
   verbosity: minimal
 
 
