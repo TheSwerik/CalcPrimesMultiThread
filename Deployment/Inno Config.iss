@@ -1,6 +1,6 @@
 ; Variables
 #define MyAppName "Calculate Primes Multithreaded"
-#define MyAppVersion "1.1.0"
+#define MyAppVersion "1.1.2"
 #define MyAppPublisher "Swerik"
 #define MyAppURL "https://github.com/TheSwerik/CalcPrimesMultiThread"   
 #define MyAppExeName "CalculatePrimesMultithreaded.exe"
@@ -36,8 +36,8 @@ Name: "german"; MessagesFile: "compiler:Languages\German.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked   
 
 [Files]
-Source: "Publish\64bit\*"; DestDir: "{app}\bin\64bit"; Excludes:"*.pdb"; Check: Is64BitInstallMode;     Flags: ignoreversion
-Source: "Publish\32bit\*"; DestDir: "{app}\bin\32bit"; Excludes:"*.pdb"; Check: not Is64BitInstallMode; Flags: ignoreversion solidbreak   
+Source: "Publish\64bit\*"; DestDir: "{app}\bin\64bit"; Excludes:"*.pdb"; Check: Is64BitInstallMode;     Flags: ignoreversion recursesubdirs
+Source: "Publish\32bit\*"; DestDir: "{app}\bin\32bit"; Excludes:"*.pdb"; Check: not Is64BitInstallMode; Flags: ignoreversion recursesubdirs solidbreak   
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\bin\64bit\{#MyAppExeName}"; Flags: createonlyiffileexists;
