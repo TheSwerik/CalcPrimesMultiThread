@@ -23,7 +23,7 @@ build:
 
 
 artifacts:
-  - path: /Installer/CalculatePrimesMultithreaded.exe
+  - path: /Installer/Calculate Primes Multithreaded.exe
     name: CalcPrimesMultiThread
 
 after_build:
