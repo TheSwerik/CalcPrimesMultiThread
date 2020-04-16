@@ -28,8 +28,8 @@ artifacts:
     name: CalcPrimesMultiThread
 
 after_build:  
-  - ps: dotnet publish "-p:PublishProfile=Frontend\Frontend.csproj" -c:Release -o:Publish\64bit -r:win-x64 --self-contained:false --no-build
-  - ps: dotnet publish "-p:PublishProfile=Frontend\Frontend.csproj" -c:Release -o:Publish\32bit -r:win-x86 --self-contained:false --no-build
+  - ps: dotnet publish "-p:PublishProfile=Frontend\Frontend.csproj" -c:Release -o:Publish\64bit -r:win-x64 --self-contained:false
+  - ps: dotnet publish "-p:PublishProfile=Frontend\Frontend.csproj" -c:Release -o:Publish\32bit -r:win-x86 --self-contained:false
   - ps: '& "C:\Program Files (x86)\Inno Setup 6\iscc.exe" "Deployment\Inno Config.iss"'
 
 deploy:
