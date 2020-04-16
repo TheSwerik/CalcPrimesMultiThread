@@ -1,5 +1,5 @@
 ﻿environment:
-  my_version_number: 1.0.7
+  my_version_number: 1.1.0 # DONT FORGET TO CHANGE IS IN THE ISS FILE
 
 version: $(my_version_number).{build}
 
@@ -23,10 +23,12 @@ build:
 
 
 artifacts:
-  - path: /Output/CalculatePrimesMultithreaded.exe
+  - path: /Installer/CalculatePrimesMultithreaded.exe
     name: CalcPrimesMultiThread
 
 after_build:
+  - ps: dotnet publish "-p:PublishProfile=.run\Publish framework Dependent x64.run.xml" -c:Release -o:Publish\64bit -r:win-x64 --self-contained:false
+  - ps: dotnet publish "-p:PublishProfile=.run\Publish framework Dependent x86.run.xml" -c:Release -o:Publish\32bit -r:win-x86 --self-contained:false
   - ps: '& "C:\Program Files (x86)\Inno Setup 6\iscc.exe" "Deployment\Inno Config.iss"'
 
 deploy:
