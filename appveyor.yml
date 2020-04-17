@@ -40,10 +40,10 @@ after_test:
 artifacts:
   - path: /Installer/$(application_name).exe
     name: WinInstaller
-  - path: /Installer/$(application_name) MacOS.zip
-    name: MacInstaller
-  - path: /Installer/$(application_name) Linux.tar.gz
-    name: LinuxInstaller
+#  - path: /Installer/$(application_name) MacOS.zip
+#    name: MacInstaller
+#  - path: /Installer/$(application_name) Linux.tar.gz
+#    name: LinuxInstaller
 
 deploy:
   - provider: GitHub
