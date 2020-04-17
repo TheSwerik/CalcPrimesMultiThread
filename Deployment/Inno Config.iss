@@ -1,6 +1,6 @@
 ; Variables
 #define MyAppName "Calculate Primes Multithreaded"
-#define MyAppVersion "1.1.2"
+#define MyAppVersion "1.1.3"
 #define MyAppPublisher "Swerik"
 #define MyAppURL "https://github.com/TheSwerik/CalcPrimesMultiThread"   
 #define MyAppExeName "CalculatePrimesMultithreaded.exe"
