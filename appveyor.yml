@@ -25,21 +25,31 @@ build:
 
 artifacts:
   - path: /Installer/Calculate Primes Multithreaded.exe
-    name: CalcPrimesMultiThread
+    name: WinInstaller
+#  - path: /Installer/Calculate Primes Multithreaded MacOS.zip
+#    name: MacInstaller
+#  - path: /Installer/Calculate Primes Multithreaded Linux.tar.gz
+#    name: LinuxInstaller
 
 after_build:
   #  - ps: dotnet publish "-p:PublishProfile=Frontend\Frontend.csproj" -c:Release -o:Publish\64bit -r:win-x64 --self-contained:false
   #  - ps: dotnet publish "-p:PublishProfile=Frontend\Frontend.csproj" -c:Release -o:Publish\32bit -r:win-x86 --self-contained:false
-  - ps: dotnet publish "-p:PublishProfile=Frontend\Frontend.csproj" -c:Release -o:Publish\64bit -r:win-x64 --self-contained:true -p:PublishSingleFile=false -p:PublishTrimmed=true
-  - ps: dotnet publish "-p:PublishProfile=Frontend\Frontend.csproj" -c:Release -o:Publish\32bit -r:win-x86 --self-contained:true -p:PublishSingleFile=false -p:PublishTrimmed=true
+  #  - ps: dotnet publish "-p:PublishProfile=Frontend\Frontend.csproj" -c:Release -o:Publish\linux -r:linux-x64 --self-contained:false
+  #  - ps: dotnet publish "-p:PublishProfile=Frontend\Frontend.csproj" -c:Release -o:Publish\osx -r:osx-x64 --self-contained:false
+  - ps: dotnet publish "-p:PublishProfile=Frontend\Frontend.csproj" -c:Release -o:Publish\bin\64bit -r:win-x64 --self-contained:true -p:PublishSingleFile=false -p:PublishTrimmed=true
+  - ps: dotnet publish "-p:PublishProfile=Frontend\Frontend.csproj" -c:Release -o:Publish\bin\32bit -r:win-x86 --self-contained:true -p:PublishSingleFile=false -p:PublishTrimmed=true
+#  - ps: dotnet publish "-p:PublishProfile=Frontend\Frontend.csproj" -c:Release -o:Publish\bin\linux -r:linux-x64 --self-contained:true -p:PublishSingleFile=false -p:PublishTrimmed=true
+#  - ps: dotnet publish "-p:PublishProfile=Frontend\Frontend.csproj" -c:Release -o:Publish\bin\osx -r:osx-x64 --self-contained:true -p:PublishSingleFile=false -p:PublishTrimmed=true
   - ps: '& "C:\Program Files (x86)\Inno Setup 6\iscc.exe" "Deployment\Inno Config.iss"'
+#  - ps: tar -C Publish --exclude='bin/64bit' --exclude=bin/32bit --exclude=bin/osx -czf "Installer\Calculate Primes Multithreaded Linux.tar.gz" bin
+#  - ps: 7z a "Installer\Calculate Primes Multithreaded MacOS.zip" .\Publish\* -xr!bin\64bit -xr!bin\32bit -xr!bin\linux
 
 deploy:
   - provider: GitHub
     release: $(my_version_number)
     auth_token: # encrypted token:
       secure: HESVuhwKdUbPpbBsQrWslB7GYNy5r03/MN/enpu7UWbY886bOE+EpbEFwAVMrtLO
-    artifact: CalcPrimesMultiThread
+    artifact: *
     draft: false
     prerelease: false
     force_update: false
