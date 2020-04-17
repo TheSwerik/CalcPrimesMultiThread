@@ -1,5 +1,7 @@
 ﻿environment:
   my_version_number: 1.1.2 # DONT FORGET TO CHANGE IS IN THE ISS FILE
+  project_name: Frontend
+  application_name: Calculate Primes Multithreaded
 
 version: $(my_version_number).{build}
 
@@ -22,27 +24,26 @@ dotnet_csproj:
 build:
   verbosity: minimal
 
+after_build:
+  #  - ps: dotnet publish "-p:PublishProfile=$(PROJECT)\$(PROJECT).csproj" -c:Release -o:Publish\64bit -r:win-x64 --self-contained:false
+  #  - ps: dotnet publish "-p:PublishProfile=$(PROJECT)\$(PROJECT).csproj" -c:Release -o:Publish\32bit -r:win-x86 --self-contained:false
+  #  - ps: dotnet publish "-p:PublishProfile=$(PROJECT)\$(PROJECT).csproj" -c:Release -o:Publish\linux -r:linux-x64 --self-contained:false
+  #  - ps: dotnet publish "-p:PublishProfile=$(PROJECT)\$(PROJECT).csproj" -c:Release -o:Publish\osx -r:osx-x64 --self-contained:false
+  - ps: dotnet publish "-p:PublishProfile=$(PROJECT)\$(PROJECT).csproj" -c:Release -o:Publish\bin\64bit -r:win-x64    --self-contained:true -p:PublishSingleFile=false -p:PublishTrimmed=true
+  - ps: dotnet publish "-p:PublishProfile=$(PROJECT)\$(PROJECT).csproj" -c:Release -o:Publish\bin\32bit -r:win-x86    --self-contained:true -p:PublishSingleFile=false -p:PublishTrimmed=true
+  - ps: dotnet publish "-p:PublishProfile=$(PROJECT)\$(PROJECT).csproj" -c:Release -o:Publish\bin\linux -r:linux-x64  --self-contained:true -p:PublishSingleFile=false -p:PublishTrimmed=true
+  - ps: dotnet publish "-p:PublishProfile=$(PROJECT)\$(PROJECT).csproj" -c:Release -o:Publish\bin\osx   -r:osx-x64    --self-contained:true -p:PublishSingleFile=false -p:PublishTrimmed=true
+  - ps: '& "C:\Program Files (x86)\Inno Setup 6\iscc.exe" "Deployment\Inno Config.iss"'
+  - ps: tar -C Publish --exclude='bin/64bit' --exclude=bin/32bit --exclude=bin/osx -czf "Installer\$(application_name) Linux.tar.gz" bin
+  - ps: 7z a "Installer\$(application_name) MacOS.zip" .\Publish\* -xr!bin\64bit -xr!bin\32bit -xr!bin\linux
 
 artifacts:
-  - path: /Installer/Calculate Primes Multithreaded.exe
+  - path: /Installer/$(application_name).exe
     name: WinInstaller
-  - path: /Installer/Calculate Primes Multithreaded MacOS.zip
+  - path: /Installer/$(application_name) MacOS.zip
     name: MacInstaller
-  - path: /Installer/Calculate Primes Multithreaded Linux.tar.gz
+  - path: /Installer/$(application_name) Linux.tar.gz
     name: LinuxInstaller
-
-after_build:
-  #  - ps: dotnet publish "-p:PublishProfile=Frontend\Frontend.csproj" -c:Release -o:Publish\64bit -r:win-x64 --self-contained:false
-  #  - ps: dotnet publish "-p:PublishProfile=Frontend\Frontend.csproj" -c:Release -o:Publish\32bit -r:win-x86 --self-contained:false
-  #  - ps: dotnet publish "-p:PublishProfile=Frontend\Frontend.csproj" -c:Release -o:Publish\linux -r:linux-x64 --self-contained:false
-  #  - ps: dotnet publish "-p:PublishProfile=Frontend\Frontend.csproj" -c:Release -o:Publish\osx -r:osx-x64 --self-contained:false
-  - ps: dotnet publish "-p:PublishProfile=Frontend\Frontend.csproj" -c:Release -o:Publish\bin\64bit -r:win-x64 --self-contained:true -p:PublishSingleFile=false -p:PublishTrimmed=true
-  - ps: dotnet publish "-p:PublishProfile=Frontend\Frontend.csproj" -c:Release -o:Publish\bin\32bit -r:win-x86 --self-contained:true -p:PublishSingleFile=false -p:PublishTrimmed=true
-  - ps: dotnet publish "-p:PublishProfile=Frontend\Frontend.csproj" -c:Release -o:Publish\bin\linux -r:linux-x64 --self-contained:true -p:PublishSingleFile=false -p:PublishTrimmed=true
-  - ps: dotnet publish "-p:PublishProfile=Frontend\Frontend.csproj" -c:Release -o:Publish\bin\osx -r:osx-x64 --self-contained:true -p:PublishSingleFile=false -p:PublishTrimmed=true
-  - ps: '& "C:\Program Files (x86)\Inno Setup 6\iscc.exe" "Deployment\Inno Config.iss"'
-  - ps: tar -C Publish --exclude='bin/64bit' --exclude=bin/32bit --exclude=bin/osx -czf "Installer\Calculate Primes Multithreaded Linux.tar.gz" bin
-  - ps: 7z a "Installer\Calculate Primes Multithreaded MacOS.zip" .\Publish\* -xr!bin\64bit -xr!bin\32bit -xr!bin\linux
 
 deploy:
   - provider: GitHub
