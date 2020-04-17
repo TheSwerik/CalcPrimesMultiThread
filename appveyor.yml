@@ -24,7 +24,7 @@ dotnet_csproj:
 build:
   verbosity: minimal
 
-after_build:
+after_test:
   #  - ps: dotnet publish "-p:PublishProfile=$($env:project_name)\$($env:project_name).csproj" -c:Release -o:Publish\64bit -r:win-x64 --self-contained:false
   #  - ps: dotnet publish "-p:PublishProfile=$($env:project_name)\$($env:project_name).csproj" -c:Release -o:Publish\32bit -r:win-x86 --self-contained:false
   #  - ps: dotnet publish "-p:PublishProfile=$($env:project_name)\$($env:project_name).csproj" -c:Release -o:Publish\linux -r:linux-x64 --self-contained:false
